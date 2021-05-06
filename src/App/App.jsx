@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import Login from "../Login/Login";
 import Lander from "../Lander/Lander";
 import Review from "../Review/Review";
@@ -21,20 +26,18 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/login">
-            {/* @TODO: figure out how to redirect w/o hooks warnings */}
             {isLoggedIn ? (
-              <Lander
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                upcomingNotes={upcomingNotes}
-                setUpcomingNotes={setUpcomingNotes}
-              />
+              <Redirect to="/" />
             ) : (
               <Login setIsLoggedIn={setIsLoggedIn} />
             )}
           </Route>
           <Route path="/review">
-            <Review isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            {isLoggedIn ? (
+              <Review isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            ) : (
+              <Redirect to="/" />
+            )}
           </Route>
           <Route path="/">
             <Lander

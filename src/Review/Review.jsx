@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   GridContainer,
@@ -12,13 +13,13 @@ const Review = ({ isLoggedIn, setIsLoggedIn }) => {
     setIsLoggedIn(false);
   };
 
-  const navLinks = isLoggedIn
-    ? [
-        <Button type="button" onClick={logOut}>
-          Log Out
-        </Button>,
-      ]
-    : [<></>];
+  const navLinks = [<Link to="/">Home</Link>];
+  isLoggedIn &&
+    navLinks.push(
+      <Button type="button" onClick={logOut}>
+        Log Out
+      </Button>
+    );
 
   return (
     <>
