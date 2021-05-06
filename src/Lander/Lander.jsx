@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
@@ -59,9 +58,9 @@ const Lander = ({
         <Nav className="justify-content-end">
           <Nav.Item>
             {isLoggedIn ? (
-              <Button type="button" variant="link" onClick={logOut}>
+              <Link to="/" onClick={logOut}>
                 Log Out
-              </Button>
+              </Link>
             ) : (
               <Link to="/login">Log In</Link>
             )}
