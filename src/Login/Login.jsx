@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import { API_URL } from "../constants";
 import { callAPI, getFormData } from "../utils";
+import Header from "../shared/Header/Header";
 
 const Login = ({ setIsLoggedIn }) => {
   const [loginFailed, setLoginFailed] = useState("");
@@ -35,13 +35,11 @@ const Login = ({ setIsLoggedIn }) => {
 
   return (
     <Container fluid="lg">
-      <Row lg={{ span: 6, offset: 3 }}>
-        <Nav className="justify-content-end">
-          <Nav.Item>
-            <Link to="/">Home</Link>
-          </Nav.Item>
-        </Nav>
-      </Row>
+      <Header
+        page="login"
+        isLoggedIn={false}
+        setIsLoggedIn={{ setIsLoggedIn }}
+      />
 
       <Row lg={{ span: 6, offset: 3 }}>
         {loginFailed && (
@@ -53,7 +51,7 @@ const Login = ({ setIsLoggedIn }) => {
         <Form onSubmit={attemptLogin}>
           <Form.Group>
             <Form.Label htmlFor="email">Email:</Form.Label>
-            <Form.Control type="email" id="email" name="email"/>
+            <Form.Control type="email" id="email" name="email" />
             <Form.Label htmlFor="password">Password:</Form.Label>
             <Form.Control type="password" id="password" name="password" />
             <Button type="submit">Sign in</Button>

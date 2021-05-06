@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import { calcUpcomingNotes, useFetch } from "../utils";
 import { API_URL } from "../constants";
+import Header from "../shared/Header/Header";
 
 const Overview = ({ setUpcomingNotes, upcomingNotes }) => {
   const url = `${API_URL}/notes/overview`;
@@ -47,26 +47,13 @@ const Lander = ({
   upcomingNotes,
   setUpcomingNotes,
 }) => {
-  const logOut = () => {
-    localStorage.removeItem("mokkoAuthToken");
-    setIsLoggedIn(false);
-  };
-
   return (
     <Container fluid="lg">
-      <Row lg={{ span: 6, offset: 3 }}>
-        <Nav className="justify-content-end">
-          <Nav.Item>
-            {isLoggedIn ? (
-              <Link to="/" onClick={logOut}>
-                Log Out
-              </Link>
-            ) : (
-              <Link to="/login">Log In</Link>
-            )}
-          </Nav.Item>
-        </Nav>
-      </Row>
+      <Header
+        page="lander"
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+      />
 
       <Row lg={{ span: 6, offset: 3 }}>
         {isLoggedIn ? (
