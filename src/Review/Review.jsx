@@ -1,11 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  GridContainer,
-  Header,
-  PrimaryNav,
-} from "@trussworks/react-uswds";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
 
 const Review = ({ isLoggedIn, setIsLoggedIn }) => {
   const logOut = () => {
@@ -13,25 +11,27 @@ const Review = ({ isLoggedIn, setIsLoggedIn }) => {
     setIsLoggedIn(false);
   };
 
-  const navLinks = [<Link to="/">Home</Link>];
-  isLoggedIn &&
-    navLinks.push(
-      <Button type="button" onClick={logOut}>
-        Log Out
-      </Button>
-    );
-
   return (
-    <>
-      <Header basic>
-        <div className="usa-nav-container">
-          <PrimaryNav items={navLinks} />
-        </div>
-      </Header>
-      <GridContainer containerSize="desktop">
+    <Container fluid="lg">
+      <Row lg={{ span: 6, offset: 3 }}>
+        <Nav className="justify-content-end">
+          <Nav.Item>
+            <Link to="/">Home</Link>
+          </Nav.Item>
+          <Nav.Item>
+            {isLoggedIn && (
+              <Button type="button" variant="link" onClick={logOut}>
+                Log Out
+              </Button>
+            )}
+          </Nav.Item>
+        </Nav>
+      </Row>
+
+      <Row lg={{ span: 6, offset: 3 }}>
         <div>sup</div>
-      </GridContainer>
-    </>
+      </Row>
+    </Container>
   );
 };
 

@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  Alert,
-  Button,
-  Form,
-  Fieldset,
-  GridContainer,
-  Header,
-  Label,
-  PrimaryNav,
-  TextInput,
-} from "@trussworks/react-uswds";
+import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
 import { API_URL } from "../constants";
 import { callAPI, getFormData } from "../utils";
 
@@ -39,29 +34,33 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <>
-      <Header basic>
-        <div className="usa-nav-container">
-          <PrimaryNav items={[<Link to="/">Home</Link>]} />
-        </div>
-      </Header>
-      <GridContainer containerSize="desktop">
+    <Container fluid="lg">
+      <Row lg={{ span: 6, offset: 3 }}>
+        <Nav className="justify-content-end">
+          <Nav.Item>
+            <Link to="/">Home</Link>
+          </Nav.Item>
+        </Nav>
+      </Row>
+
+      <Row lg={{ span: 6, offset: 3 }}>
         {loginFailed && (
-          <Alert type="warning" slim>
+          <Alert variant="warning" dismissible>
             Looks like that combo&apos;s not recognized - try again?
           </Alert>
         )}
-        <Form onSubmit={attemptLogin} large>
-          <Fieldset legend="Sign In" legendStyle="large">
-            <Label htmlFor="email">Email:</Label>
-            <TextInput id="email" name="email" type="text" />
-            <Label htmlFor="password">Password:</Label>
-            <TextInput id="password" name="password" type="password" />
+        <h1>Sign in</h1>
+        <Form onSubmit={attemptLogin}>
+          <Form.Group>
+            <Form.Label htmlFor="email">Email:</Form.Label>
+            <Form.Control type="email" id="email" name="email"/>
+            <Form.Label htmlFor="password">Password:</Form.Label>
+            <Form.Control type="password" id="password" name="password" />
             <Button type="submit">Sign in</Button>
-          </Fieldset>
+          </Form.Group>
         </Form>
-      </GridContainer>
-    </>
+      </Row>
+    </Container>
   );
 };
 
