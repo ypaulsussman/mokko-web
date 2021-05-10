@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
 import { API_URL } from "../constants";
 import { callAPI, getFormData } from "../utils";
 import Header from "../shared/Header/Header";
@@ -34,31 +29,25 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <Container fluid="lg">
-      <Header
-        page="login"
-        isLoggedIn={false}
-        setIsLoggedIn={ setIsLoggedIn }
-      />
+    <div>
+      <Header page="login" isLoggedIn={false} setIsLoggedIn={setIsLoggedIn} />
 
-      <Row lg={{ span: 6, offset: 3 }}>
-        {loginFailed && (
-          <Alert variant="warning" dismissible>
-            Looks like that combo&apos;s not recognized - try again?
-          </Alert>
-        )}
-        <h1>Sign in</h1>
-        <Form onSubmit={attemptLogin}>
-          <Form.Group>
-            <Form.Label htmlFor="email">Email:</Form.Label>
-            <Form.Control type="email" id="email" name="email" />
-            <Form.Label htmlFor="password">Password:</Form.Label>
-            <Form.Control type="password" id="password" name="password" />
-            <Button type="submit">Sign in</Button>
-          </Form.Group>
-        </Form>
-      </Row>
-    </Container>
+      {loginFailed && (
+        <p>Looks like that combo&apos;s not recognized - try again?</p>
+      )}
+      <h1>Sign In</h1>
+      <form onSubmit={attemptLogin}>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" name="email" />
+        </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" name="password" />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 };
 

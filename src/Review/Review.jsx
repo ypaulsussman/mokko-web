@@ -1,6 +1,4 @@
 import React, { useMemo } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import Header from "../shared/Header/Header";
 import { useFetch } from "../utils";
 import { API_URL } from "../constants";
@@ -24,17 +22,15 @@ const Review = ({ isLoggedIn, setIsLoggedIn, upcomingNotes }) => {
   console.log("data: ", data);
 
   return (
-    <Container fluid="lg">
+    <div>
       <Header
         page="review"
         isLoggedIn={{ isLoggedIn }}
         setIsLoggedIn={setIsLoggedIn}
       />
 
-      <Row lg={{ span: 6, offset: 3 }}>
-        <div>sup</div>
-      </Row>
-    </Container>
+        <p>sup</p>
+    </div>
   );
 };
 

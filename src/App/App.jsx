@@ -9,7 +9,6 @@ import Login from "../Login/Login";
 import Lander from "../Lander/Lander";
 import Review from "../Review/Review";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const App = () => {

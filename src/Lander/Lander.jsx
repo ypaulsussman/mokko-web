@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import { calcUpcomingNotes, useFetch } from "../utils";
 import { API_URL } from "../constants";
 import Header from "../shared/Header/Header";
@@ -48,24 +46,22 @@ const Lander = ({
   setUpcomingNotes,
 }) => {
   return (
-    <Container fluid="lg">
+    <div>
       <Header
         page="lander"
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
       />
 
-      <Row lg={{ span: 6, offset: 3 }}>
-        {isLoggedIn ? (
-          <Overview
-            upcomingNotes={upcomingNotes}
-            setUpcomingNotes={setUpcomingNotes}
-          />
-        ) : (
-          <Welcome />
-        )}
-      </Row>
-    </Container>
+      {isLoggedIn ? (
+        <Overview
+          upcomingNotes={upcomingNotes}
+          setUpcomingNotes={setUpcomingNotes}
+        />
+      ) : (
+        <Welcome />
+      )}
+    </div>
   );
 };
 

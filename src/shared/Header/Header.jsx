@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
 
 const Header = ({ page, isLoggedIn, setIsLoggedIn }) => {
   const logOut = () => {
@@ -13,32 +11,30 @@ const Header = ({ page, isLoggedIn, setIsLoggedIn }) => {
 
   ["login", "review"].includes(page) &&
     navItems.push(
-      <Nav.Item key="home-link">
-        <Link to="/">Home</Link>
-      </Nav.Item>
+      <Link key="home-link" to="/">
+        Home
+      </Link>
     );
 
   isLoggedIn &&
     navItems.push(
-      <Nav.Item key="logout-link">
-        <Link to="/" onClick={logOut}>
-          Log Out
-        </Link>
-      </Nav.Item>
+      <Link key="logout-link" to="/" onClick={logOut}>
+        Log Out
+      </Link>
     );
 
   page === "lander" &&
     !isLoggedIn &&
     navItems.push(
-      <Nav.Item key="logout-link">
-        <Link to="/login">Log In</Link>
-      </Nav.Item>
+      <Link key="logout-link" to="/login">
+        Log In
+      </Link>
     );
 
   return (
-    <Row lg={{ span: 6, offset: 3 }}>
-      <Nav className="justify-content-end">{navItems}</Nav>
-    </Row>
+    <header>
+      <nav>{navItems}</nav>
+    </header>
   );
 };
 
