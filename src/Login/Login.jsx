@@ -38,7 +38,7 @@ const Login = ({ setIsLoggedIn }) => {
       <Header
         page="login"
         isLoggedIn={false}
-        setIsLoggedIn={{ setIsLoggedIn }}
+        setIsLoggedIn={ setIsLoggedIn }
       />
 
       <Row lg={{ span: 6, offset: 3 }}>
