@@ -7,7 +7,7 @@ export const getFormData = () => {
     acc[k] = v;
     return acc;
   }, {});
-}
+};
 
 export const callAPI = (url, init) =>
   fetch(url, init).then((resp) => {
@@ -50,7 +50,7 @@ export const useFetch = (url, init) => {
   return { data, status, error };
 };
 
-export const calcUpcomingNotes = (data = []) => {
+const getStringDates = () => {
   const today = new Date();
 
   const paddedMonth =
@@ -60,18 +60,46 @@ export const calcUpcomingNotes = (data = []) => {
   const paddedTomorrow =
     today.getDate() + 1 > 9 ? today.getDate() : `0${today.getDate() + 1}`;
 
-  const todayish = `${today.getFullYear()}-${paddedMonth}-${paddedToday}`;
-  const tomorrowish = `${today.getFullYear()}-${paddedMonth}-${paddedTomorrow}`;
-  const initialValue = { today: [], tomorrow: [], restOfWeek: [] };
+  return {
+    todayish: `${today.getFullYear()}-${paddedMonth}-${paddedToday}`,
+    tomorrowish: `${today.getFullYear()}-${paddedMonth}-${paddedTomorrow}`,
+  };
+};
 
-  return data.reduce((acc, { id, next_occurrence: nextOccurrence }) => {
-    if (nextOccurrence === todayish) {
-      acc.today.push(id);
-    } else if (nextOccurrence === tomorrowish) {
-      acc.tomorrow.push(id);
-    } else {
-      acc.restOfWeek.push(id);
+export const calcUpcomingNotes = (data = []) => {
+  const { todayish, tomorrowish } = getStringDates();
+  const init = {
+    today: [],
+    tomorrow: [],
+    restOfWeek: [],
+    uninitialized: [],
+  };
+
+  // Distribute notes by occurrence
+  const { today, tomorrow, restOfWeek, uninitialized } = data.reduce(
+    (acc, { id, next_occurrence: nextOccurrence }) => {
+      if (nextOccurrence === todayish) {
+        acc.today.push(id);
+      } else if (nextOccurrence === tomorrowish) {
+        acc.tomorrow.push(id);
+      } else if (nextOccurrence) {
+        acc.restOfWeek.push(id);
+      } else {
+        acc.uninitialized.push(id);
+      }
+      return acc;
+    },
+    init
+  );
+
+  // fill upcoming occurrences with new notes
+  [today, tomorrow, restOfWeek].forEach((arr, i) => {
+    const maximum = i < 2 ? 6 : 30;
+    while (arr.length < maximum) {
+      if (!uninitialized.length) break;
+      arr.push(uninitialized.pop());
     }
-    return acc;
-  }, initialValue);
+  });
+
+  return { today, tomorrow, restOfWeek, uninitialized };
 };
