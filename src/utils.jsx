@@ -9,43 +9,45 @@ export const getFormData = () => {
   }, {});
 };
 
-export const callAPI = (url, init) =>
-  fetch(url, init).then((resp) => {
+export const callAPI = (url, initHash) =>
+  fetch(url, initHash).then((resp) => {
     if (!resp.ok) {
+      // @TODO: replace with `dispatch` to set `requestError`
+      // in top-level reducer-store
       throw Error(`Code ${resp.status} (${resp.statusText})`);
     }
     return resp.json();
   });
 
-export const useFetch = (url, init) => {
+export const useFetch = (url, initHash) => {
   const [data, setData] = useState();
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("idle");
 
   useEffect(() => {
-    let performUpdate = true;
+    let isMostRecentRequest = true;
 
     setStatus("loading");
     setData(undefined);
     setError(null);
 
-    callAPI(url, init)
+    callAPI(url, initHash)
       .then((successResponse) => {
-        if (performUpdate) {
+        if (isMostRecentRequest) {
           setData(successResponse);
           setStatus("success");
         }
       })
       .catch((errorResponse) => {
-        if (performUpdate) {
+        if (isMostRecentRequest) {
           setError(errorResponse);
           setStatus("error");
         }
       });
     return () => {
-      performUpdate = false;
+      isMostRecentRequest = false;
     };
-  }, [url, init]);
+  }, [url, initHash]);
 
   return { data, status, error };
 };
@@ -68,7 +70,7 @@ const getStringDates = () => {
 
 export const calcUpcomingNotes = (data = []) => {
   const { todayish, tomorrowish } = getStringDates();
-  const init = {
+  const initHash = {
     today: [],
     tomorrow: [],
     restOfWeek: [],
@@ -89,7 +91,7 @@ export const calcUpcomingNotes = (data = []) => {
       }
       return acc;
     },
-    init
+    initHash
   );
 
   // fill upcoming occurrences with new notes
