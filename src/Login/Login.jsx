@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { API_URL } from "../constants";
+import { API_URL, ACTIONS } from "../constants";
 import { callAPI, getFormData } from "../utils";
 import Header from "../shared/Header/Header";
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = ({ appDispatch }) => {
   const [loginFailed, setLoginFailed] = useState("");
   const history = useHistory();
 
@@ -20,7 +20,7 @@ const Login = ({ setIsLoggedIn }) => {
     callAPI(`${API_URL}/login`, reqOptions)
       .then(({ auth_token: authToken }) => {
         localStorage.setItem("mokkoAuthToken", authToken);
-        setIsLoggedIn(true);
+        appDispatch({ type: ACTIONS.LOG_IN });
         history.push("/");
       })
       .catch((error) => {
@@ -30,7 +30,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   return (
     <div>
-      <Header page="login" isLoggedIn={false} setIsLoggedIn={setIsLoggedIn} />
+      <Header page="login" isLoggedIn={false} appDispatch={appDispatch} />
 
       {loginFailed && (
         <p>Looks like that combo&apos;s not recognized - try again?</p>

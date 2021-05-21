@@ -3,7 +3,7 @@ import Header from "../shared/Header/Header";
 import { useFetch } from "../utils";
 import { API_URL } from "../constants";
 
-const Review = ({ isLoggedIn, setIsLoggedIn, upcomingNotes }) => {
+const Review = ({ appState: { isLoggedIn, upcomingNotes }, appDispatch }) => {
   const url = `${API_URL}/notes/review`;
   const reqOptions = useMemo(
     () => ({
@@ -26,10 +26,10 @@ const Review = ({ isLoggedIn, setIsLoggedIn, upcomingNotes }) => {
       <Header
         page="review"
         isLoggedIn={{ isLoggedIn }}
-        setIsLoggedIn={setIsLoggedIn}
+        appDispatch={appDispatch}
       />
 
-        <p>sup</p>
+      <p>sup</p>
     </div>
   );
 };

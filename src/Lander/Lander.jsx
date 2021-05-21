@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { calcUpcomingNotes, useFetch } from "../utils";
-import { API_URL } from "../constants";
+import { API_URL, ACTIONS } from "../constants";
 import Header from "../shared/Header/Header";
 
-const Overview = ({ setUpcomingNotes, upcomingNotes }) => {
+const Overview = ({ appDispatch, upcomingNotes }) => {
   const url = `${API_URL}/notes/overview`;
   const reqOptions = useMemo(
     () => ({
@@ -17,8 +17,11 @@ const Overview = ({ setUpcomingNotes, upcomingNotes }) => {
   // @TODO: add loading spinner
   const { data } = useFetch(url, reqOptions);
   useEffect(() => {
-    setUpcomingNotes(calcUpcomingNotes(data));
-  }, [data, setUpcomingNotes]);
+    appDispatch({
+      type: ACTIONS.SET_UPCOMING_NOTES,
+      upcomingNotes: calcUpcomingNotes(data),
+    });
+  }, [data, appDispatch]);
 
   return (
     <>
@@ -39,25 +42,13 @@ const Welcome = () => (
   </>
 );
 
-const Lander = ({
-  isLoggedIn,
-  setIsLoggedIn,
-  upcomingNotes,
-  setUpcomingNotes,
-}) => {
+const Lander = ({ appState: { isLoggedIn, upcomingNotes }, appDispatch }) => {
   return (
     <div>
-      <Header
-        page="lander"
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-      />
+      <Header page="lander" isLoggedIn={isLoggedIn} appDispatch={appDispatch} />
 
       {isLoggedIn ? (
-        <Overview
-          upcomingNotes={upcomingNotes}
-          setUpcomingNotes={setUpcomingNotes}
-        />
+        <Overview upcomingNotes={upcomingNotes} appDispatch={appDispatch} />
       ) : (
         <Welcome />
       )}

@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ACTIONS } from "../../constants";
 
-const Header = ({ page, isLoggedIn, setIsLoggedIn }) => {
+const Header = ({ page, isLoggedIn, appDispatch }) => {
   const logOut = () => {
     localStorage.removeItem("mokkoAuthToken");
-    setIsLoggedIn(false);
+    appDispatch({ type: ACTIONS.LOG_OUT });
   };
 
   const navItems = [];

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -9,47 +9,32 @@ import Login from "../Login/Login";
 import Lander from "../Lander/Lander";
 import Review from "../Review/Review";
 
+import { appReducer, initialAppState } from "./appReducer";
 import "./App.css";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(() =>
-    Boolean(localStorage.getItem("mokkoAuthToken"))
-  );
-  const [upcomingNotes, setUpcomingNotes] = useState({
-    today: [],
-    tomorrow: [],
-    restOfWeek: [],
-  });
+  const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route path="/login">
-            {isLoggedIn ? (
+            {appState.isLoggedIn ? (
               <Redirect to="/" />
             ) : (
-              <Login setIsLoggedIn={setIsLoggedIn} />
+              <Login appDispatch={appDispatch} />
             )}
           </Route>
           <Route path="/review">
-            {isLoggedIn ? (
-              <Review
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                upcomingNotes={upcomingNotes}
-              />
+            {appState.isLoggedIn ? (
+              <Review appState={appState} appDispatch={appDispatch} />
             ) : (
               <Redirect to="/" />
             )}
           </Route>
           <Route path="/">
-            <Lander
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
-              upcomingNotes={upcomingNotes}
-              setUpcomingNotes={setUpcomingNotes}
-            />
+            <Lander appState={appState} appDispatch={appDispatch} />
           </Route>
         </Switch>
       </Router>
