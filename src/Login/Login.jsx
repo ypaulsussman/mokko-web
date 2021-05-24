@@ -6,6 +6,7 @@ import Header from "../shared/Header/Header";
 
 const Login = ({ appDispatch }) => {
   const [loginFailed, setLoginFailed] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
   const history = useHistory();
 
   const attemptLogin = (e) => {
@@ -17,14 +18,21 @@ const Login = ({ appDispatch }) => {
       body: JSON.stringify(getFormData()),
     };
 
+    setIsLoading(true)
     callAPI(`${API_URL}/login`, reqOptions)
       .then(({ auth_token: authToken }) => {
+        setIsLoading(false)
         localStorage.setItem("mokkoAuthToken", authToken);
         appDispatch({ type: ACTIONS.LOG_IN });
         history.push("/");
       })
       .catch((error) => {
-        setLoginFailed(error);
+        setIsLoading(false)
+        if (/^Code 401/.test(error)) {
+          setLoginFailed("Looks like that combo's not recognized - try again?");
+        } else {
+          setLoginFailed(error);
+        }
       });
   };
 
@@ -32,9 +40,10 @@ const Login = ({ appDispatch }) => {
     <div>
       <Header page="login" isLoggedIn={false} appDispatch={appDispatch} />
 
-      {loginFailed && (
-        <p>Looks like that combo&apos;s not recognized - try again?</p>
-      )}
+      {isLoading && <p>LOADING SPINNER</p>}
+
+      {loginFailed && <p>{loginFailed}</p>}
+
       <h1>Sign In</h1>
       <form onSubmit={attemptLogin}>
         <div>

@@ -12,8 +12,6 @@ export const getFormData = () => {
 export const callAPI = (url, initHash) =>
   fetch(url, initHash).then((resp) => {
     if (!resp.ok) {
-      // @TODO: replace with `dispatch` to set `requestError`
-      // in top-level reducer-store
       throw Error(`Code ${resp.status} (${resp.statusText})`);
     }
     return resp.json();

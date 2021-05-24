@@ -21,6 +21,12 @@ export const appReducer = (state, action) => {
       return {
         ...initialAppState,
       };
+      
+    case ACTIONS.SET_REVIEW_NOTES:
+      return {
+        ...state,
+        reviewNotes: action.reviewNotes,
+      };
 
     case ACTIONS.SET_UPCOMING_NOTES:
       return {

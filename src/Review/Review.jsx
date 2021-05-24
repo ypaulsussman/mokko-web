@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import Header from "../shared/Header/Header";
 import { useFetch } from "../utils";
-import { API_URL } from "../constants";
+import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
 
-const Review = ({ appState: { isLoggedIn, upcomingNotes }, appDispatch }) => {
+const Review = ({ appState, appDispatch }) => {
   const url = `${API_URL}/notes/review`;
   const reqOptions = useMemo(
     () => ({
@@ -12,25 +12,33 @@ const Review = ({ appState: { isLoggedIn, upcomingNotes }, appDispatch }) => {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("mokkoAuthToken"),
       },
-      body: JSON.stringify(upcomingNotes),
+      body: JSON.stringify(appState.upcomingNotes),
     }),
-    [upcomingNotes]
+    [appState.upcomingNotes]
   );
 
-  // @TODO: add loading spinner
-  const { data } = useFetch(url, reqOptions);
-  console.log("data: ", data);
+  const { data, status, error } = useFetch(url, reqOptions);
+  useEffect(() => {
+    appDispatch({ type: ACTIONS.SET_REVIEW_NOTES, reviewNotes: data });
+  }, [data, appDispatch]);
 
   return (
-    <div>
+    <>
+      {status === REQUEST_STATUS.LOADING && <div> SPINNER </div>}
       <Header
         page="review"
-        isLoggedIn={{ isLoggedIn }}
+        isLoggedIn={appState.isLoggedIn}
         appDispatch={appDispatch}
       />
-
-      <p>sup</p>
-    </div>
+      {status === REQUEST_STATUS.ERROR ? (
+        <div> {`UPCOMING ERROR PAGE; ALSO: ${error}`} </div>
+      ) : (
+        <>
+          <p>sup</p>
+          <p>{JSON.stringify(appState.reviewNotes)}</p>
+        </>
+      )}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ACTIONS } from "../../constants";
+import { ACTIONS, PAGES } from "../../constants";
 
 const Header = ({ page, isLoggedIn, appDispatch }) => {
   const logOut = () => {
@@ -10,7 +10,7 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
 
   const navItems = [];
 
-  ["login", "review"].includes(page) &&
+  [PAGES.LOGIN, PAGES.REVIEW].includes(page) &&
     navItems.push(
       <Link key="home-link" to="/">
         Home
@@ -24,7 +24,7 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
       </Link>
     );
 
-  page === "lander" &&
+  page === PAGES.LANDER &&
     !isLoggedIn &&
     navItems.push(
       <Link key="logout-link" to="/login">
