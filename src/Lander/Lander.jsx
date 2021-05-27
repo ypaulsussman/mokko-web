@@ -3,12 +3,12 @@ import Header from "../shared/Header/Header";
 import Overview from './Overview'
 import Welcome from './Welcome'
 
-const Lander = ({ appState: { isLoggedIn, upcomingNotes }, appDispatch }) => {
+const Lander = ({ appState: { upcomingNotes }, appDispatch }) => {
   return (
     <div>
-      <Header page="lander" isLoggedIn={isLoggedIn} appDispatch={appDispatch} />
+      <Header page="lander" appDispatch={appDispatch} />
 
-      {isLoggedIn ? (
+      {sessionStorage.getItem("mokkoAuthToken") ? (
         <Overview upcomingNotes={upcomingNotes} appDispatch={appDispatch} />
       ) : (
         <Welcome />

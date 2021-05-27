@@ -20,14 +20,14 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/login">
-            {appState.isLoggedIn ? (
+            {sessionStorage.getItem("mokkoAuthToken") ? (
               <Redirect to="/" />
             ) : (
               <Login appDispatch={appDispatch} />
             )}
           </Route>
           <Route path="/review">
-            {appState.isLoggedIn ? (
+            {sessionStorage.getItem("mokkoAuthToken") ? (
               <Review appState={appState} appDispatch={appDispatch} />
             ) : (
               <Redirect to="/" />

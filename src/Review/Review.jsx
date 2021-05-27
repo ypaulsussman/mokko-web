@@ -10,7 +10,7 @@ const Review = ({ appState, appDispatch }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("mokkoAuthToken"),
+        Authorization: sessionStorage.getItem("mokkoAuthToken"),
       },
       body: JSON.stringify(appState.upcomingNotes),
     }),
@@ -27,7 +27,6 @@ const Review = ({ appState, appDispatch }) => {
       {status === REQUEST_STATUS.LOADING && <div> SPINNER </div>}
       <Header
         page="review"
-        isLoggedIn={appState.isLoggedIn}
         appDispatch={appDispatch}
       />
       {status === REQUEST_STATUS.ERROR ? (

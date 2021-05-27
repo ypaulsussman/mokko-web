@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ACTIONS, PAGES } from "../../constants";
 
-const Header = ({ page, isLoggedIn, appDispatch }) => {
+const Header = ({ page, appDispatch }) => {
   const logOut = () => {
-    localStorage.removeItem("mokkoAuthToken");
+    sessionStorage.removeItem("mokkoAuthToken");
     appDispatch({ type: ACTIONS.LOG_OUT });
   };
 
@@ -17,7 +17,7 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
       </Link>
     );
 
-  isLoggedIn &&
+    sessionStorage.getItem("mokkoAuthToken") &&
     navItems.push(
       <Link key="logout-link" to="/" onClick={logOut}>
         Log Out
@@ -25,7 +25,7 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
     );
 
   page === PAGES.LANDER &&
-    !isLoggedIn &&
+    !sessionStorage.getItem("mokkoAuthToken") &&
     navItems.push(
       <Link key="logout-link" to="/login">
         Log In
