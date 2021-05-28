@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import Header from "../shared/Header/Header";
 import { useHistory } from "react-router-dom";
+import DOMPurify from 'dompurify';
+import marked from "marked";
 import { useFetch } from "../utils";
 import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
 
@@ -48,7 +50,8 @@ const Review = ({ appState, appDispatch }) => {
       ) : (
         <>
           <p>sup</p>
-          <p>{JSON.stringify(appState.reviewNotes)}</p>
+          {appState.reviewNotes && 
+           <div dangerouslySetInnerHTML={{ __html: marked(DOMPurify.sanitize(appState.reviewNotes.notes[0].content)) }} />}
         </>
       )}
     </>
