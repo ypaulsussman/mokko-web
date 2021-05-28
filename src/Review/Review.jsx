@@ -1,9 +1,22 @@
 import React, { useEffect, useMemo } from "react";
 import Header from "../shared/Header/Header";
+import { useHistory } from "react-router-dom";
 import { useFetch } from "../utils";
 import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
 
 const Review = ({ appState, appDispatch }) => {
+  // Handle user-initiated browser-refresh
+  const history = useHistory();
+  useEffect(() => {
+    if (!appState.upcomingNotes.today.length) {
+      history.push("/");
+    }
+    const confirmNavAway = (e) => e.preventDefault();
+    window.addEventListener("beforeunload", confirmNavAway);
+    return () => window.removeEventListener("beforeunload", confirmNavAway);
+  }, [history, appState.upcomingNotes.today]);
+
+  // Fetch upcomingNotes' full data; set in appReducer
   const url = `${API_URL}/notes/review`;
   const reqOptions = useMemo(
     () => ({

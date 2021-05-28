@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ACTIONS, PAGES } from "../../constants";
 
 const Header = ({ page, isLoggedIn, appDispatch }) => {
+  const history = useHistory();
   const logOut = () => {
     localStorage.removeItem("mokkoAuthToken");
     appDispatch({ type: ACTIONS.LOG_OUT });
+    history.push("/");
   };
 
   const navItems = [];
