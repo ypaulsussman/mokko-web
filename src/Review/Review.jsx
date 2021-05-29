@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 import Header from "../shared/Header/Header";
 import { useHistory } from "react-router-dom";
-import DOMPurify from 'dompurify';
-import marked from "marked";
 import { useFetch } from "../utils";
 import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
+import ReviewForm from "./ReviewForm";
 
 const Review = ({ appState, appDispatch }) => {
   // Handle user-initiated browser-refresh
@@ -31,7 +30,6 @@ const Review = ({ appState, appDispatch }) => {
     }),
     [appState.upcomingNotes]
   );
-
   const { data, status, error } = useFetch(url, reqOptions);
   useEffect(() => {
     appDispatch({ type: ACTIONS.SET_REVIEW_NOTES, reviewNotes: data });
@@ -48,11 +46,13 @@ const Review = ({ appState, appDispatch }) => {
       {status === REQUEST_STATUS.ERROR ? (
         <div> {`UPCOMING ERROR PAGE; ALSO: ${error}`} </div>
       ) : (
-        <>
-          <p>sup</p>
-          {appState.reviewNotes && 
-           <div dangerouslySetInnerHTML={{ __html: marked(DOMPurify.sanitize(appState.reviewNotes.notes[0].content)) }} />}
-        </>
+        appState.reviewNotes && (
+          <ReviewForm
+            currentNote={appState.reviewNotes.notes[0]}
+            prompts={appState.reviewNotes.prompts}
+            appDispatch={appDispatch}
+          />
+        )
       )}
     </>
   );

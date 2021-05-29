@@ -21,7 +21,20 @@ export const appReducer = (state, action) => {
       return {
         ...initialAppState,
       };
-      
+
+    case ACTIONS.MOKKO_SUCCESS:
+      console.log("state.reviewNotes: ", state.reviewNotes);
+      return {
+        ...state,
+        // @TODO: extract notes && prompts to different keys
+        reviewNotes: {
+          ...state.reviewNotes,
+          notes: state.reviewNotes.notes.filter(
+            ({ id }) => id !== action.noteId
+          ),
+        },
+      };
+
     case ACTIONS.SET_REVIEW_NOTES:
       return {
         ...state,

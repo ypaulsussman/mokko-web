@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { API_URL, ACTIONS } from "../constants";
+import { ACTIONS, API_URL } from "../constants";
 import { callAPI, getFormData } from "../utils";
 import Header from "../shared/Header/Header";
 
