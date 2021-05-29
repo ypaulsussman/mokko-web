@@ -12,10 +12,10 @@ const TextDisplay = ({ text }) => (
   />
 );
 
-const ReviewForm = ({ currentNote, prompts, appDispatch }) => {
+const ReviewForm = ({ currentNote, allPrompts, appDispatch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const cue = currentNote.prompts_remaining.length
-    ? prompts.find((p) => p.id === currentNote.prompts_remaining[0])
+    ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
     : currentNote.cue_note;
 
   // @TODO replace w/ reducers, for refresh on mokko-submit?

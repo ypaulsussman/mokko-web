@@ -32,7 +32,13 @@ const Review = ({ appState, appDispatch }) => {
   );
   const { data, status, error } = useFetch(url, reqOptions);
   useEffect(() => {
-    appDispatch({ type: ACTIONS.SET_REVIEW_NOTES, reviewNotes: data });
+    if (data) {      
+      appDispatch({
+        type: ACTIONS.SET_REVIEW_NOTES,
+        notesToReview: data.notes,
+        allPrompts: data.prompts,
+      });
+    }
   }, [data, appDispatch]);
 
   return (
@@ -46,10 +52,10 @@ const Review = ({ appState, appDispatch }) => {
       {status === REQUEST_STATUS.ERROR ? (
         <div> {`UPCOMING ERROR PAGE; ALSO: ${error}`} </div>
       ) : (
-        appState.reviewNotes && (
+        appState.notesToReview && (
           <ReviewForm
-            currentNote={appState.reviewNotes.notes[0]}
-            prompts={appState.reviewNotes.prompts}
+            currentNote={appState.notesToReview[0]}
+            allPrompts={appState.allPrompts}
             appDispatch={appDispatch}
           />
         )
