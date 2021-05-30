@@ -15,9 +15,9 @@ const TextDisplay = ({ text }) => (
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
   const [isLoading, setIsLoading] = useState(false);
-  const cue = currentNote.prompts_remaining.length
-    ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
-    : currentNote.cue_note;
+  const [cue, cueIsPrompt] = currentNote.prompts_remaining.length
+    ? [allPrompts.find((p) => p.id === currentNote.prompts_remaining[0]), true]
+    : [currentNote.cue_note, false];
 
   const submitMokko = (e) => {
     e.preventDefault();
@@ -25,12 +25,13 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("mokkoAuthToken"),
+        Authorization: sessionStorage.getItem("mokkoAuthToken"),
       },
       body: JSON.stringify({
         mokkoInterval,
         mokkoValue,
-        cue,
+        cueId: cue.id,
+        cueIsPrompt,
         noteId: currentNote.id,
       }),
     };
@@ -116,9 +117,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
             <label htmlFor="mokkoInterval">
               see this note again in
               <select
-                value={
-                  mokkoInterval ? mokkoInterval : currentNote.current_interval
-                }
+                value={mokkoInterval}
                 onChange={(e) =>
                   appDispatch({
                     type: ACTIONS.SET_MOKKOSTATUS,

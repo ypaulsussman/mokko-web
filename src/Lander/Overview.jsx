@@ -8,7 +8,7 @@ const Overview = ({ appDispatch, upcomingNotes }) => {
   const reqOptions = useMemo(
     () => ({
       method: "GET",
-      headers: { Authorization: localStorage.getItem("mokkoAuthToken") },
+      headers: { Authorization: sessionStorage.getItem("mokkoAuthToken") },
     }),
     []
   );

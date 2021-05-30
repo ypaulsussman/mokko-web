@@ -5,7 +5,7 @@ import { ACTIONS, PAGES } from "../../constants";
 const Header = ({ page, isLoggedIn, appDispatch }) => {
   const history = useHistory();
   const logOut = () => {
-    localStorage.removeItem("mokkoAuthToken");
+    sessionStorage.removeItem("mokkoAuthToken");
     appDispatch({ type: ACTIONS.LOG_OUT });
     history.push("/");
   };

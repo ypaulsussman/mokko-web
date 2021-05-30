@@ -1,7 +1,8 @@
 import { ACTIONS } from "../constants";
+import { getInitialInterval } from "../utils";
 
 export const initialAppState = {
-  isLoggedIn: Boolean(localStorage.getItem("mokkoAuthToken")),
+  isLoggedIn: Boolean(sessionStorage.getItem("mokkoAuthToken")),
   upcomingNotes: {
     today: [],
     tomorrow: [],
@@ -28,13 +29,18 @@ export const appReducer = (state, action) => {
       };
 
     case ACTIONS.MOKKO_SUCCESS:
-      console.log("state.notesToReview: ", state.notesToReview);
+      const prunedReviewNotes = state.notesToReview.filter(
+        ({ id }) => id !== action.noteId
+      );
       return {
         ...state,
-        notesToReview: state.notesToReview.filter(
-          ({ id }) => id !== action.noteId
-        ),
-        mokkoStatus: initialAppState.mokkoStatus
+        notesToReview: prunedReviewNotes,
+        mokkoStatus: {
+          ...initialAppState.mokkoStatus,
+          mokkoInterval: getInitialInterval(
+            prunedReviewNotes[0].current_interval
+          ),
+        },
       };
 
     case ACTIONS.SET_MOKKOSTATUS:
@@ -49,8 +55,14 @@ export const appReducer = (state, action) => {
     case ACTIONS.SET_REVIEW_NOTES:
       return {
         ...state,
-        notesToReview: action.notesToReview,
         allPrompts: action.allPrompts,
+        notesToReview: action.notesToReview,
+        mokkoStatus: {
+          ...initialAppState.mokkoStatus,
+          mokkoInterval: getInitialInterval(
+            action.notesToReview[0].current_interval
+          ),
+        },
       };
 
     case ACTIONS.SET_UPCOMING_NOTES:

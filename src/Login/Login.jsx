@@ -22,7 +22,7 @@ const Login = ({ appDispatch }) => {
     callAPI(`${API_URL}/login`, reqOptions)
       .then(({ auth_token: authToken }) => {
         setIsLoading(false)
-        localStorage.setItem("mokkoAuthToken", authToken);
+        sessionStorage.setItem("mokkoAuthToken", authToken);
         appDispatch({ type: ACTIONS.LOG_IN });
         history.push("/");
       })

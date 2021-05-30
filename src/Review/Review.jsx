@@ -24,7 +24,7 @@ const Review = ({ appState, appDispatch }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: localStorage.getItem("mokkoAuthToken"),
+        Authorization: sessionStorage.getItem("mokkoAuthToken"),
       },
       body: JSON.stringify(appState.upcomingNotes),
     }),
@@ -32,7 +32,7 @@ const Review = ({ appState, appDispatch }) => {
   );
   const { data, status, error } = useFetch(url, reqOptions);
   useEffect(() => {
-    if (data) {      
+    if (data) {
       appDispatch({
         type: ACTIONS.SET_REVIEW_NOTES,
         notesToReview: data.notes,

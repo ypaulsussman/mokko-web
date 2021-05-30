@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { BASE_INTERVALS } from "./constants";
 
 export const getFormData = () => {
   const formElement = document.querySelector("form");
@@ -102,4 +103,13 @@ export const calcUpcomingNotes = (data = []) => {
   });
 
   return { today, tomorrow, restOfWeek, uninitialized };
+};
+
+export const getInitialInterval = (currentInterval) => {
+  const currentIntervalIndex = BASE_INTERVALS.indexOf(currentInterval);
+  if (currentIntervalIndex >= 0) {
+    return BASE_INTERVALS[currentIntervalIndex + 1];
+  } else {
+    return BASE_INTERVALS[0];
+  }
 };
