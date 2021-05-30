@@ -56,6 +56,7 @@ const Review = ({ appState, appDispatch }) => {
           <ReviewForm
             currentNote={appState.notesToReview[0]}
             allPrompts={appState.allPrompts}
+            mokkoStatus={appState.mokkoStatus}
             appDispatch={appDispatch}
           />
         )

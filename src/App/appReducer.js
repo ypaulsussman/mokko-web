@@ -7,6 +7,11 @@ export const initialAppState = {
     tomorrow: [],
     restOfWeek: [],
   },
+  mokkoStatus: {
+    mokkoValue: "",
+    mokkoInterval: 0,
+    mokkoStage: 1,
+  },
 };
 
 export const appReducer = (state, action) => {
@@ -29,6 +34,16 @@ export const appReducer = (state, action) => {
         notesToReview: state.notesToReview.filter(
           ({ id }) => id !== action.noteId
         ),
+        mokkoStatus: initialAppState.mokkoStatus
+      };
+
+    case ACTIONS.SET_MOKKOSTATUS:
+      return {
+        ...state,
+        mokkoStatus: {
+          ...state.mokkoStatus,
+          ...action.mokkoStatus,
+        },
       };
 
     case ACTIONS.SET_REVIEW_NOTES:

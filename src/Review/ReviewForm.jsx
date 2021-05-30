@@ -12,18 +12,12 @@ const TextDisplay = ({ text }) => (
   />
 );
 
-const ReviewForm = ({ currentNote, allPrompts, appDispatch }) => {
+const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
+  const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
   const [isLoading, setIsLoading] = useState(false);
   const cue = currentNote.prompts_remaining.length
     ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
     : currentNote.cue_note;
-
-  // @TODO replace w/ reducers, for refresh on mokko-submit?
-  const [reviewStage, setReviewStage] = useState(1);
-  const [mokkoValue, setMokkoValue] = useState("");
-  const [mokkoInterval, setMokkoInterval] = useState(
-    currentNote.current_interval
-  );
 
   const submitMokko = (e) => {
     e.preventDefault();
@@ -58,34 +52,44 @@ const ReviewForm = ({ currentNote, allPrompts, appDispatch }) => {
     <>
       {isLoading && <p>LOADING SPINNER</p>}
 
-      <section className={reviewStage === 1 ? "main-col" : "left-col"}>
+      <section className={mokkoStage === 1 ? "main-col" : "left-col"}>
         <TextDisplay text={currentNote.content} />
-        {reviewStage < 3 && (
+        {mokkoStage < 3 && (
           <>
             <button className="details-button">Details</button>
             <button className="edit-button">Edit</button>
           </>
         )}
-        {reviewStage === 1 && (
+        {mokkoStage === 1 && (
           <button
             type="button"
-            onClick={() => setReviewStage(2)}
+            onClick={() =>
+              appDispatch({
+                type: ACTIONS.SET_MOKKOSTATUS,
+                mokkoStatus: { mokkoStage: 2 },
+              })
+            }
             className="progress-stage-button"
           >
             Cool!
           </button>
         )}
-        {reviewStage === 3 && <TextDisplay text={cue.content} />}
+        {mokkoStage === 3 && <TextDisplay text={cue.content} />}
       </section>
 
-      {reviewStage === 2 && (
+      {mokkoStage === 2 && (
         <section className="right-col">
           <TextDisplay text={cue.content} />
           <button className="details-button">Details</button>
           <button className="edit-button">Edit</button>
           <button
             type="button"
-            onClick={() => setReviewStage(3)}
+            onClick={() =>
+              appDispatch({
+                type: ACTIONS.SET_MOKKOSTATUS,
+                mokkoStatus: { mokkoStage: 3 },
+              })
+            }
             className="progress-stage-button"
           >
             Cool!
@@ -93,7 +97,7 @@ const ReviewForm = ({ currentNote, allPrompts, appDispatch }) => {
         </section>
       )}
 
-      {reviewStage === 3 && (
+      {mokkoStage === 3 && (
         <section className="right-col">
           <form>
             <label htmlFor="mokkoValue">your mokko:</label>
@@ -101,14 +105,26 @@ const ReviewForm = ({ currentNote, allPrompts, appDispatch }) => {
               id="mokkoValue"
               name="mokkoValue"
               value={mokkoValue}
-              onChange={(e) => setMokkoValue(e.target.value)}
+              onChange={(e) =>
+                appDispatch({
+                  type: ACTIONS.SET_MOKKOSTATUS,
+                  mokkoStatus: { mokkoValue: e.target.value },
+                })
+              }
             />
 
             <label htmlFor="mokkoInterval">
               see this note again in
               <select
-                value={mokkoInterval}
-                onChange={(e) => setMokkoInterval(e.target.value)}
+                value={
+                  mokkoInterval ? mokkoInterval : currentNote.current_interval
+                }
+                onChange={(e) =>
+                  appDispatch({
+                    type: ACTIONS.SET_MOKKOSTATUS,
+                    mokkoStatus: { mokkoInterval: e.target.value },
+                  })
+                }
               >
                 {BASE_INTERVALS.map((interval) => (
                   <option key={interval} value={interval}>
@@ -116,7 +132,7 @@ const ReviewForm = ({ currentNote, allPrompts, appDispatch }) => {
                   </option>
                 ))}
               </select>
-              days
+              {`day${mokkoInterval === 1 ? "" : "s"}`}
             </label>
             <button
               type="submit"
