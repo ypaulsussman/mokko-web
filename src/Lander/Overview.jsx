@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { calcUpcomingNotes, useFetch } from "../utils";
 import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
+import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 
 const Overview = ({ appDispatch, upcomingNotes }) => {
   const url = `${API_URL}/notes/overview`;
@@ -23,7 +24,7 @@ const Overview = ({ appDispatch, upcomingNotes }) => {
   }, [data, appDispatch]);
 
   return status === REQUEST_STATUS.ERROR ? (
-    <div> {(`UPCOMING ERROR PAGE; ALSO: ${error}`)} </div>
+    <ErrorMessage message={error} />
   ) : (
     <>
       {status === REQUEST_STATUS.LOADING && <LoadingSpinner />}
