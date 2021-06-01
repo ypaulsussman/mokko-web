@@ -3,6 +3,7 @@ import Header from "../shared/Header/Header";
 import { useHistory } from "react-router-dom";
 import { useFetch } from "../utils";
 import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
+import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ReviewForm from "./ReviewForm";
 
 const Review = ({ appState, appDispatch }) => {
@@ -43,7 +44,7 @@ const Review = ({ appState, appDispatch }) => {
 
   return (
     <>
-      {status === REQUEST_STATUS.LOADING && <div> SPINNER </div>}
+      {status === REQUEST_STATUS.LOADING && <LoadingSpinner />}
       <Header
         page="review"
         isLoggedIn={appState.isLoggedIn}

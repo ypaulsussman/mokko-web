@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import marked from "marked";
 import { ACTIONS, API_URL, BASE_INTERVALS } from "../constants";
 import { callAPI } from "../utils";
+import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 
 const TextDisplay = ({ text }) => (
   <div
@@ -51,7 +52,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
 
   return (
     <>
-      {isLoading && <p>LOADING SPINNER</p>}
+      {isLoading && <LoadingSpinner />}
 
       <section className={mokkoStage === 1 ? "main-col" : "left-col"}>
         <TextDisplay text={currentNote.content} />

@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { ACTIONS, API_URL } from "../constants";
 import { callAPI, getFormData } from "../utils";
 import Header from "../shared/Header/Header";
+import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 
 const Login = ({ appDispatch }) => {
   const [loginFailed, setLoginFailed] = useState("");
@@ -40,7 +41,7 @@ const Login = ({ appDispatch }) => {
     <div>
       <Header page="login" isLoggedIn={false} appDispatch={appDispatch} />
 
-      {isLoading && <p>LOADING SPINNER</p>}
+      {isLoading && <LoadingSpinner />}
 
       {loginFailed && <p>{loginFailed}</p>}
 
