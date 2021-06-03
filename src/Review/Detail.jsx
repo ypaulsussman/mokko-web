@@ -11,33 +11,69 @@ export const TextDisplay = ({ text }) => (
   />
 );
 
-export const NoteDetail = ({ appDispatch, note, displayButtons }) => (
-  <>
-    <TextDisplay text={note.content}/>
+export const NoteDetail = ({ appDispatch, note, displayButtons }) => {
+  const [displayNoteDetails, setDisplayNoteDetails] = useState(false);
 
-    {displayButtons.modifierButtons && (
-      <>
-        <button className="details-button">Details</button>
-        <button className="edit-button">Edit</button>
-      </>
-    )}
+  return (
+    <>
+      <TextDisplay text={note.content} />
 
-    {displayButtons.nextStageButton && (
-      <button
-        type="button"
-        className="next-stage-button"
-        onClick={() =>
-          appDispatch({
-            type: ACTIONS.SET_MOKKOSTATUS,
-            mokkoStatus: { mokkoStage: 2 },
-          })
-        }
-      >
-        Cool!
-      </button>
-    )}
-  </>
-);
+      {displayButtons.modifierButtons && (
+        <>
+          <button
+            type="button"
+            className="details-button"
+            onClick={() => {
+              setDisplayNoteDetails(!displayNoteDetails);
+            }}
+          >
+            Details
+          </button>
+          <button
+            type="button"
+            className="edit-button"
+            onClick={() => {
+              alert("this is a noop for now dog");
+            }}
+          >
+            Edit
+          </button>
+        </>
+      )}
+
+      {displayButtons.nextStageButton && (
+        <button
+          type="button"
+          className="next-stage-button"
+          onClick={() =>
+            appDispatch({
+              type: ACTIONS.SET_MOKKOSTATUS,
+              mokkoStatus: { mokkoStage: 2 },
+            })
+          }
+        >
+          Cool!
+        </button>
+      )}
+
+      {displayNoteDetails && (
+        <>
+          <p>{`Deck: ${note.deck.title}`}</p>
+          {note.tags.length && (
+            <>
+              <ul>
+                Tags:
+                {note.tags.map((tag) => (
+                  <li>{tag.content}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
+};
 
 export const PromptDetail = ({
   prompt,
@@ -50,8 +86,8 @@ export const PromptDetail = ({
 
   return (
     <>
-      <TextDisplay text={prompt.content}/>
-      
+      <TextDisplay text={prompt.content} />
+
       {promptsRemaining.length > 1 && (
         <button
           type="button"
@@ -61,12 +97,10 @@ export const PromptDetail = ({
           Change Prompt
         </button>
       )}
-      
+
       {displayCueSelect && (
         <>
-          <label htmlFor="mokkoPrompt">
-            Select a different prompt:
-          </label>
+          <label htmlFor="mokkoPrompt">Select a different prompt:</label>
           <select
             id="mokkoPrompt"
             name="mokkoPrompt"
