@@ -7,7 +7,7 @@ import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 
 const Login = ({ appDispatch }) => {
   const [loginFailed, setLoginFailed] = useState("");
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   const attemptLogin = (e) => {
@@ -19,20 +19,20 @@ const Login = ({ appDispatch }) => {
       body: JSON.stringify(getFormData()),
     };
 
-    setIsLoading(true)
+    setIsLoading(true);
     callAPI(`${API_URL}/login`, reqOptions)
       .then(({ auth_token: authToken }) => {
-        setIsLoading(false)
+        setIsLoading(false);
         sessionStorage.setItem("mokkoAuthToken", authToken);
         appDispatch({ type: ACTIONS.LOG_IN });
         history.push("/");
       })
-      .catch((error) => {
-        setIsLoading(false)
-        if (/^Code 401/.test(error)) {
+      .catch(({ message }) => {
+        setIsLoading(false);
+        if (/^Code 401/.test(message)) {
           setLoginFailed("Looks like that combo's not recognized - try again?");
         } else {
-          setLoginFailed(error);
+          setLoginFailed(message);
         }
       });
   };

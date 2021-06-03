@@ -13,7 +13,7 @@ export const getFormData = () => {
 export const callAPI = (url, initHash) =>
   fetch(url, initHash).then((resp) => {
     if (!resp.ok) {
-      throw Error(`Code ${resp.status} (${resp.statusText})`);
+      throw new Error(`Code ${resp.status} (${resp.statusText})`);
     }
     return resp.json();
   });

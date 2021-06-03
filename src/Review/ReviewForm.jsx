@@ -1,22 +1,12 @@
 import React, { useState } from "react";
-import DOMPurify from "dompurify";
-import marked from "marked";
 import { ACTIONS, API_URL, BASE_INTERVALS } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-
-const TextDisplay = ({ text }) => (
-  <div
-    dangerouslySetInnerHTML={{
-      __html: marked(DOMPurify.sanitize(text)),
-    }}
-  />
-);
+import { NoteDetail, PromptDetail, TextDisplay } from "./Detail";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
   const [isLoading, setIsLoading] = useState(false);
-  const [displayCueSelect, setDisplayCueSelect] = useState(false);
   const [cue, setCue] = useState(
     currentNote.prompts_remaining.length
       ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
@@ -25,7 +15,6 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const cueIsPrompt = Boolean(currentNote.prompts_remaining.length);
 
   const submitMokko = (e) => {
-    console.log("cue, on submit:", JSON.stringify(cue));
     e.preventDefault();
     const reqOptions = {
       method: "POST",
@@ -64,85 +53,38 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
           mokkoStage === 1 ? "review-form__main-col" : "review-form__left-col"
         }
       >
-        <TextDisplay text={currentNote.content} />
-        {mokkoStage < 3 && (
-          <>
-            <button className="details-button">Details</button>
-            <button className="edit-button">Edit</button>
-          </>
-        )}
-        {mokkoStage === 1 && (
-          <button
-            type="button"
-            onClick={() =>
-              appDispatch({
-                type: ACTIONS.SET_MOKKOSTATUS,
-                mokkoStatus: { mokkoStage: 2 },
-              })
-            }
-            className="progress-stage-button"
-          >
-            Cool!
-          </button>
-        )}
+        <NoteDetail
+          appDispatch={appDispatch}
+          note={currentNote}
+          displayButtons={{
+            modifierButtons: Boolean(mokkoStage < 3),
+            nextStageButton: Boolean(mokkoStage === 1),
+          }}
+        />
+
         {mokkoStage === 3 && <TextDisplay text={cue.content} />}
       </section>
 
       {mokkoStage === 2 && (
         <section className="right-col">
-          <TextDisplay text={cue.content} />
-          {cueIsPrompt || (
-            <>
-              <button className="details-button">Details</button>
-              <button className="edit-button">Edit</button>
-            </>
+          {cueIsPrompt ? (
+            <PromptDetail
+              prompt={cue}
+              promptsRemaining={currentNote.prompts_remaining}
+              setCue={setCue}
+              allPrompts={allPrompts}
+              appDispatch={appDispatch}
+            />
+          ) : (
+            <NoteDetail
+              appDispatch={appDispatch}
+              note={cue}
+              displayButtons={{
+                modifierButtons: true,
+                nextStageButton: true,
+              }}
+            />
           )}
-          {currentNote.prompts_remaining.length > 1 && (
-            <button
-              type="button"
-              onClick={() => setDisplayCueSelect(true)}
-              className="display-cue-select-button"
-            >
-              Choose Prompt
-            </button>
-          )}
-          {displayCueSelect && (
-            <>
-              <label htmlFor="mokkoPrompt">
-                Select a different prompt, if desired:
-              </label>
-              <select
-                id="mokkoPrompt"
-                name="mokkoPrompt"
-                value={cue}
-                onChange={(e) => {
-                  setCue(allPrompts.find((p) => p.id === e.target.value));
-                  setDisplayCueSelect(false);
-                }}
-              >
-                {currentNote.prompts_remaining.map((promptId) => {
-                  console.log("cue: ", JSON.stringify(promptId));
-                  return (
-                    <option key={promptId} value={promptId}>
-                      {allPrompts.find((p) => p.id === promptId).content}
-                    </option>
-                  );
-                })}
-              </select>
-            </>
-          )}
-          <button
-            type="button"
-            onClick={() =>
-              appDispatch({
-                type: ACTIONS.SET_MOKKOSTATUS,
-                mokkoStatus: { mokkoStage: 3 },
-              })
-            }
-            className="progress-stage-button"
-          >
-            Cool!
-          </button>
         </section>
       )}
 
@@ -185,8 +127,8 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
             </label>
             <button
               type="submit"
-              onClick={submitMokko}
               className="progress-stage-button"
+              onClick={submitMokko}
             >
               Cool!
             </button>
