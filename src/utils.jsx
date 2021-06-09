@@ -37,9 +37,9 @@ export const useFetch = (url, initHash) => {
           setStatus("success");
         }
       })
-      .catch((errorResponse) => {
+      .catch(({ message }) => {
         if (isMostRecentRequest) {
-          setError(errorResponse);
+          setError(message);
           setStatus("error");
         }
       });
@@ -50,6 +50,17 @@ export const useFetch = (url, initHash) => {
 
   return { data, status, error };
 };
+
+export const getInitialInterval = (currentInterval) => {
+  const currentIntervalIndex = BASE_INTERVALS.indexOf(currentInterval);
+  if (currentIntervalIndex >= 0) {
+    return BASE_INTERVALS[currentIntervalIndex + 1];
+  } else {
+    return BASE_INTERVALS[0];
+  }
+};
+
+// ====== CURRENTLY UNUSED UTILS ====== //
 
 const getStringDates = () => {
   const today = new Date();
@@ -105,11 +116,3 @@ export const calcUpcomingNotes = (data = []) => {
   return { today, tomorrow, restOfWeek, uninitialized };
 };
 
-export const getInitialInterval = (currentInterval) => {
-  const currentIntervalIndex = BASE_INTERVALS.indexOf(currentInterval);
-  if (currentIntervalIndex >= 0) {
-    return BASE_INTERVALS[currentIntervalIndex + 1];
-  } else {
-    return BASE_INTERVALS[0];
-  }
-};

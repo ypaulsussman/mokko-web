@@ -11,26 +11,24 @@ const Review = ({ appState, appDispatch }) => {
   // Handle user-initiated browser-refresh
   const history = useHistory();
   useEffect(() => {
-    if (!appState.upcomingNotes.today.length) {
+    if (appState.notesToReview && !appState.notesToReview.length) {
       history.push("/");
     }
     const confirmNavAway = (e) => e.preventDefault();
     window.addEventListener("beforeunload", confirmNavAway);
     return () => window.removeEventListener("beforeunload", confirmNavAway);
-  }, [history, appState.upcomingNotes.today]);
+  }, [history, appState.notesToReview]);
 
-  // Fetch upcomingNotes' full data; set in appReducer
+  // Fetch notesToReview && associated cues; set in appReducer
   const url = `${API_URL}/notes/review`;
   const reqOptions = useMemo(
     () => ({
-      method: "POST",
+      method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: sessionStorage.getItem("mokkoAuthToken"),
       },
-      body: JSON.stringify(appState.upcomingNotes),
     }),
-    [appState.upcomingNotes]
+    []
   );
   const { data, status, error } = useFetch(url, reqOptions);
   useEffect(() => {

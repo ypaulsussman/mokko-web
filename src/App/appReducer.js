@@ -3,11 +3,6 @@ import { getInitialInterval } from "../utils";
 
 export const initialAppState = {
   isLoggedIn: Boolean(sessionStorage.getItem("mokkoAuthToken")),
-  upcomingNotes: {
-    today: [],
-    tomorrow: [],
-    restOfWeek: [],
-  },
   mokkoStatus: {
     mokkoValue: "",
     mokkoInterval: 0,
@@ -63,12 +58,6 @@ export const appReducer = (state, action) => {
             action.notesToReview[0].current_interval
           ),
         },
-      };
-
-    case ACTIONS.SET_UPCOMING_NOTES:
-      return {
-        ...state,
-        upcomingNotes: action.upcomingNotes,
       };
 
     default:

@@ -63,8 +63,8 @@ export const NoteDetail = ({ appDispatch, note, displayButtons }) => {
             <>
               <ul>
                 Tags:
-                {note.tags.map((tag) => (
-                  <li>{tag.content}</li>
+                {note.tags.map(({ id, content }) => (
+                  <li key={id}>{content}</li>
                 ))}
               </ul>
             </>

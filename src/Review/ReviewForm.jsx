@@ -38,9 +38,9 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
         console.log("success!");
         appDispatch({ type: ACTIONS.MOKKO_SUCCESS, noteId: currentNote.id });
       })
-      .catch((error) => {
+      .catch(({ message }) => {
         setIsLoading(false);
-        console.log("error: ", error);
+        console.log("error: ", message);
       });
   };
 
