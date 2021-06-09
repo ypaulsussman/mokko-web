@@ -32,7 +32,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
     };
 
     setIsLoading(true);
-    callAPI(`${API_URL}/interrogations`, reqOptions)
+    callAPI(`${API_URL}/mokkos`, reqOptions)
       .then(() => {
         setIsLoading(false);
         console.log("success!");
