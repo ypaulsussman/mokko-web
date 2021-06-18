@@ -60,6 +60,12 @@ export const appReducer = (state, action) => {
         },
       };
 
+    case ACTIONS.SET_DECKS:
+      return {
+        ...state,
+        decks: action.decks,
+      };
+
     default:
       return state;
   }

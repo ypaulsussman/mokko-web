@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo } from "react";
-import Header from "../shared/Header/Header";
 import { useHistory } from "react-router-dom";
+
 import { useFetch } from "../utils";
-import { ACTIONS, API_URL, REQUEST_STATUS, PAGES } from "../constants";
+import { ACTIONS, API_URL, PAGES, REQUEST_STATUS } from "../constants";
+
+import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import ReviewForm from "./ReviewForm";

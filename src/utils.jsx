@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BASE_INTERVALS } from "./constants";
+import { BASE_INTERVALS, NOTE_PREVIEW_LENGTH } from "./constants";
 
 export const getFormData = () => {
   const formElement = document.querySelector("form");
@@ -60,6 +60,34 @@ export const getInitialInterval = (currentInterval) => {
   }
 };
 
+export const buildNotePreview = (noteContent) => {
+  const textToTruncate = noteContent.slice(NOTE_PREVIEW_LENGTH);
+  console.log("textToTruncate: ", textToTruncate);
+  if (!textToTruncate) {
+    return noteContent;
+  }
+
+  const nextSpaceIndex = textToTruncate.indexOf(" ");
+  console.log("nextSpaceIndex: ", nextSpaceIndex);
+
+  if (nextSpaceIndex === -1) {
+    return `${noteContent}...`;
+  }
+
+  let prunedNoteContent = noteContent
+    .slice(0, NOTE_PREVIEW_LENGTH + nextSpaceIndex)
+    .replaceAll(" - ", " // ");
+
+  if (
+    prunedNoteContent.charAt(0) === "-" &&
+    prunedNoteContent.charAt(1) === " "
+  ) {
+    prunedNoteContent = prunedNoteContent.slice(2);
+  }
+
+  return `${prunedNoteContent}...`;
+};
+
 // ====== CURRENTLY UNUSED UTILS ====== //
 
 const getStringDates = () => {
@@ -115,4 +143,3 @@ export const calcUpcomingNotes = (data = []) => {
 
   return { today, tomorrow, restOfWeek, uninitialized };
 };
-
