@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 
 const LanderIntro = () => (
@@ -15,8 +16,8 @@ const LanderLinks = () => (
     </p>
     <p>[ or ]</p>
     <p>
-      CRUD your <Link to="/decks">Decks</Link>, <Link to="/notes">Notes</Link>
-      , or <Link to="/tags">Tags</Link>
+      CRUD your <Link to="/decks">Decks</Link>, <Link to="/notes">Notes</Link>,
+      or <Link to="/tags">Tags</Link>
     </p>
   </>
 );
@@ -24,14 +25,14 @@ const LanderLinks = () => (
 const Lander = ({ appState: { isLoggedIn }, appDispatch }) => {
   return (
     <div>
-      <Header page="lander" isLoggedIn={isLoggedIn} appDispatch={appDispatch} />
+      <Header
+        page={PAGES.LANDER}
+        isLoggedIn={isLoggedIn}
+        appDispatch={appDispatch}
+      />
       <h1>Welcome to Mokko!</h1>
 
-      {isLoggedIn ? (
-        <LanderLinks appDispatch={appDispatch} />
-      ) : (
-        <LanderIntro />
-      )}
+      {isLoggedIn ? <LanderLinks appDispatch={appDispatch} /> : <LanderIntro />}
     </div>
   );
 };

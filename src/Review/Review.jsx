@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import Header from "../shared/Header/Header";
 import { useHistory } from "react-router-dom";
 import { useFetch } from "../utils";
-import { ACTIONS, API_URL, REQUEST_STATUS } from "../constants";
+import { ACTIONS, API_URL, REQUEST_STATUS, PAGES } from "../constants";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import ReviewForm from "./ReviewForm";
@@ -45,7 +45,7 @@ const Review = ({ appState, appDispatch }) => {
     <>
       {status === REQUEST_STATUS.LOADING && <LoadingSpinner />}
       <Header
-        page="review"
+        page={PAGES.REVIEW}
         isLoggedIn={appState.isLoggedIn}
         appDispatch={appDispatch}
       />

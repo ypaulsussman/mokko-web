@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { ACTIONS, API_URL } from "../constants";
+import { ACTIONS, API_URL, PAGES } from "../constants";
 import { callAPI, getFormData } from "../utils";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
@@ -39,7 +39,11 @@ const Login = ({ appDispatch }) => {
 
   return (
     <div>
-      <Header page="login" isLoggedIn={false} appDispatch={appDispatch} />
+      <Header
+        page={PAGES.LOG_IN}
+        isLoggedIn={false}
+        appDispatch={appDispatch}
+      />
 
       {isLoading && <LoadingSpinner />}
 

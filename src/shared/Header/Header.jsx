@@ -12,7 +12,7 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
 
   const navItems = [];
 
-  [PAGES.LOGIN, PAGES.REVIEW].includes(page) &&
+  [PAGES.LOGIN, PAGES.REVIEW, PAGES.DECKS].includes(page) &&
     navItems.push(
       <Link key="home-link" to="/">
         Home
@@ -29,7 +29,7 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
   page === PAGES.LANDER &&
     !isLoggedIn &&
     navItems.push(
-      <Link key="logout-link" to="/login">
+      <Link key="login-link" to="/login">
         Log In
       </Link>
     );
