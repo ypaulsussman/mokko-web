@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import marked from "marked";
 
-import { useFetch } from "../utils";
+import { callAPI, useFetch } from "../utils";
 import { ACTIONS, API_URL, PAGES, REQUEST_STATUS } from "../constants";
 import { buildNotePreview } from "../utils";
 
@@ -11,38 +11,9 @@ import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 
-const buildDeckHTML = (deck) => (
-  <div key={deck.id}>
-    <details>
-      <summary>{deck.title}</summary>
-      <ul>
-        {deck.notes.map((note) => (
-          <li key={note.id}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: marked(
-                  DOMPurify.sanitize(buildNotePreview(note.content))
-                ),
-              }}
-            ></div>
-            <Link to={`/note/${note.id}`}>Details</Link>
-          </li>
-        ))}
-      </ul>
-    </details>
-  </div>
-);
-
-const Decks = ({ appState, appDispatch }) => {
-  const [deckNameFilter, setDeckNameFilter] = useState("");
-
-  const handleFilter = ({ target: { value } }) => {
-    setDeckNameFilter(new RegExp(value, "i"));
-  };
-
-  // Fetch decks && associated notes; set in appReducer
-  const url = `${API_URL}/decks`;
-  const reqOptions = useMemo(
+const DECK_LIST_URL = `${API_URL}/decks`;
+const useDeckListOpts = () =>
+  useMemo(
     () => ({
       method: "GET",
       headers: {
@@ -52,10 +23,68 @@ const Decks = ({ appState, appDispatch }) => {
     []
   );
 
-  const { data, status, error } = useFetch(url, reqOptions);
+const DeckRowDetails = ({ deck, handleDeckDelete }) => {
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  return (
+    <div>
+      <details>
+        <summary>
+          {deck.title}
+          <button>Edit</button>
+          <button onClick={() => handleDeckDelete(deck)}>Delete</button>
+        </summary>
+        <ul>
+          {deck.notes.map((note) => (
+            <li key={note.id}>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: marked(
+                    DOMPurify.sanitize(buildNotePreview(note.content))
+                  ),
+                }}
+              ></div>
+              <Link to={`/note/${note.id}`}>Details</Link>
+            </li>
+          ))}
+        </ul>
+      </details>
+    </div>
+  );
+};
+
+const Decks = ({ appState, appDispatch }) => {
+  const [deckNameFilter, setDeckNameFilter] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleFilter = ({ target: { value } }) => {
+    setDeckNameFilter(new RegExp(value, "i"));
+  };
+
+  const handleDeckDelete = ({ title, id, notes }) => {
+    const message = `Are you sure you want to delete the "${title}" deck? It'll also delete its ${notes.length} associated notes.`;
+    if (window.confirm(message)) {
+      setIsLoading(true);
+      callAPI(`${API_URL}/decks/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: sessionStorage.getItem("mokkoAuthToken"),
+        },
+      })
+        .then(({ destroyed_deck: destroyedDeck }) => {
+          console.log("destroyed: ", destroyedDeck);
+          setIsLoading(false);
+        })
+        .catch(({ message }) => {
+          console.log("error message: ", message);
+        });
+    }
+  };
+
+  // Fetch decks && associated notes; set in appReducer
+  const { data, status, error } = useFetch(DECK_LIST_URL, useDeckListOpts());
   useEffect(() => {
     if (data) {
-      console.log("data: ", data);
       appDispatch({
         type: ACTIONS.SET_DECKS,
         decks: data,
@@ -65,7 +94,7 @@ const Decks = ({ appState, appDispatch }) => {
 
   return (
     <>
-      {status === REQUEST_STATUS.LOADING && <LoadingSpinner />}
+      {(status === REQUEST_STATUS.LOADING || isLoading) && <LoadingSpinner />}
       <Header
         page={PAGES.DECKS}
         isLoggedIn={appState.isLoggedIn}
@@ -87,8 +116,20 @@ const Decks = ({ appState, appDispatch }) => {
             {deckNameFilter
               ? appState.decks
                   .filter(({ title }) => deckNameFilter.test(title))
-                  .map(buildDeckHTML)
-              : appState.decks.map(buildDeckHTML)}
+                  .map((deck) => (
+                    <DeckRowDetails
+                      key={deck.id}
+                      deck={deck}
+                      handleDeckDelete={handleDeckDelete}
+                    />
+                  ))
+              : appState.decks.map((deck) => (
+                  <DeckRowDetails
+                    key={deck.id}
+                    deck={deck}
+                    handleDeckDelete={handleDeckDelete}
+                  />
+                ))}
           </>
         )
       )}

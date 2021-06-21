@@ -62,13 +62,11 @@ export const getInitialInterval = (currentInterval) => {
 
 export const buildNotePreview = (noteContent) => {
   const textToTruncate = noteContent.slice(NOTE_PREVIEW_LENGTH);
-  console.log("textToTruncate: ", textToTruncate);
   if (!textToTruncate) {
     return noteContent;
   }
 
   const nextSpaceIndex = textToTruncate.indexOf(" ");
-  console.log("nextSpaceIndex: ", nextSpaceIndex);
 
   if (nextSpaceIndex === -1) {
     return `${noteContent}...`;
