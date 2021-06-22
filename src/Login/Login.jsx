@@ -1,41 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { ACTIONS, API_URL, PAGES } from "../constants";
-import { callAPI, getFormData } from "../utils";
+import { ACTIONS, API_URL, PAGES, REQUEST_STATUS } from "../constants";
+import { getFormData, useFetch } from "../utils";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 
 const Login = ({ appDispatch }) => {
-  const [loginFailed, setLoginFailed] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [{ data, status, error }, makeRequest] = useFetch();
   const history = useHistory();
 
   const attemptLogin = (e) => {
     e.preventDefault();
 
-    const reqOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(getFormData()),
-    };
-
-    setIsLoading(true);
-    callAPI(`${API_URL}/login`, reqOptions)
-      .then(({ auth_token: authToken }) => {
-        setIsLoading(false);
-        sessionStorage.setItem("mokkoAuthToken", authToken);
-        appDispatch({ type: ACTIONS.LOG_IN });
-        history.push("/");
-      })
-      .catch(({ message }) => {
-        setIsLoading(false);
-        if (/^Code 401/.test(message)) {
-          setLoginFailed("Looks like that combo's not recognized - try again?");
-        } else {
-          setLoginFailed(message);
-        }
-      });
+    makeRequest({
+      url: `${API_URL}/login`,
+      opts: {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(getFormData()),
+      },
+    });
   };
+
+  useEffect(() => {
+    if (data?.auth_token) {
+      sessionStorage.setItem("mokkoAuthToken", data.auth_token);
+      appDispatch({ type: ACTIONS.LOG_IN });
+      history.push("/");
+    }
+  }, [data, error, appDispatch, history]);
 
   return (
     <div>
@@ -45,11 +38,10 @@ const Login = ({ appDispatch }) => {
         appDispatch={appDispatch}
       />
 
-      {isLoading && <LoadingSpinner />}
-
-      {loginFailed && <p>{loginFailed}</p>}
+      {status === REQUEST_STATUS.LOADING && <LoadingSpinner />}
 
       <h1>Sign In</h1>
+      {error && <p>{error}</p>}
       <form onSubmit={attemptLogin}>
         <div>
           <label htmlFor="email">Email:</label>

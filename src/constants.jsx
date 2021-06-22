@@ -20,7 +20,7 @@ export const PAGES = {
   LANDER: "lander",
   LOGIN: "login",
   REVIEW: "review",
-  DECKS: "decks"
+  DECKS: "decks",
 };
 
 export const REQUEST_STATUS = {

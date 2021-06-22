@@ -10,6 +10,29 @@ import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import ReviewForm from "./ReviewForm";
 
 const Review = ({ appState, appDispatch }) => {
+  // Fetch notesToReview && associated cues; set in appReducer
+  const [{ data, status, error }, makeRequest] = useFetch();
+  const reqOptions = useMemo(
+    () => ({
+      method: "GET",
+      headers: {
+        Authorization: sessionStorage.getItem("mokkoAuthToken"),
+      },
+    }),
+    []
+  );
+
+  useEffect(() => {
+    makeRequest({ url: `${API_URL}/notes/review`, opts: reqOptions });
+    if (data) {
+      appDispatch({
+        type: ACTIONS.SET_REVIEW_NOTES,
+        notesToReview: data.notes,
+        allPrompts: data.prompts,
+      });
+    }
+  }, [appDispatch, data, makeRequest, reqOptions]);
+
   // Handle user-initiated browser-refresh
   const history = useHistory();
   useEffect(() => {
@@ -20,28 +43,6 @@ const Review = ({ appState, appDispatch }) => {
     window.addEventListener("beforeunload", confirmNavAway);
     return () => window.removeEventListener("beforeunload", confirmNavAway);
   }, [history, appState.notesToReview]);
-
-  // Fetch notesToReview && associated cues; set in appReducer
-  const url = `${API_URL}/notes/review`;
-  const reqOptions = useMemo(
-    () => ({
-      method: "GET",
-      headers: {
-        Authorization: sessionStorage.getItem("mokkoAuthToken"),
-      },
-    }),
-    []
-  );
-  const { data, status, error } = useFetch(url, reqOptions);
-  useEffect(() => {
-    if (data) {
-      appDispatch({
-        type: ACTIONS.SET_REVIEW_NOTES,
-        notesToReview: data.notes,
-        allPrompts: data.prompts,
-      });
-    }
-  }, [data, appDispatch]);
 
   return (
     <>

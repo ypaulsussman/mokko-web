@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { BASE_INTERVALS, NOTE_PREVIEW_LENGTH } from "./constants";
+import {
+  BASE_INTERVALS,
+  NOTE_PREVIEW_LENGTH,
+  REQUEST_STATUS,
+} from "./constants";
 
 export const getFormData = () => {
   const formElement = document.querySelector("form");
@@ -18,37 +22,38 @@ export const callAPI = (url, initHash) =>
     return resp.json();
   });
 
-export const useFetch = (url, initHash) => {
+export const useFetch = () => {
   const [data, setData] = useState();
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("idle");
+  const [request, setRequest] = useState({ url: "", opts: {} });
 
   useEffect(() => {
     let isMostRecentRequest = true;
 
-    setStatus("loading");
-    setData(undefined);
-    setError(null);
+    if (request.url) {
+      setStatus(REQUEST_STATUS.LOADING);
+      setData(undefined);
+      setError(null);
+      callAPI(request.url, request.opts)
+        .then((successResponse) => {
+          if (isMostRecentRequest) {
+            setData(successResponse);
+            setStatus(REQUEST_STATUS.SUCCESS);
+          }
+        })
+        .catch(({ message }) => {
+          if (isMostRecentRequest) {
+            setError(message);
+            setStatus(REQUEST_STATUS.ERROR);
+          }
+        });
+    }
 
-    callAPI(url, initHash)
-      .then((successResponse) => {
-        if (isMostRecentRequest) {
-          setData(successResponse);
-          setStatus("success");
-        }
-      })
-      .catch(({ message }) => {
-        if (isMostRecentRequest) {
-          setError(message);
-          setStatus("error");
-        }
-      });
-    return () => {
-      isMostRecentRequest = false;
-    };
-  }, [url, initHash]);
+    return () => (isMostRecentRequest = false);
+  }, [request.url, request.opts]);
 
-  return { data, status, error };
+  return [{ data, status, error }, setRequest];
 };
 
 export const getInitialInterval = (currentInterval) => {
