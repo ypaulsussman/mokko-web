@@ -1,16 +1,40 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-
-import { useFetch } from "../utils";
-import { ACTIONS, API_URL, PAGES, REQUEST_STATUS } from "../constants";
-
+import { callAPI } from "../utils";
+import { ACTIONS, API_URL, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import ReviewForm from "./ReviewForm";
 
 const Review = ({ appState, appDispatch }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setIsLoading(true);
+    callAPI(`${API_URL}/notes/review`, {
+      method: "GET",
+      headers: {
+        Authorization: sessionStorage.getItem("mokkoAuthToken"),
+      },
+    })
+      .then(({ notes, prompts }) => {
+        setIsLoading(false);
+        appDispatch({
+          type: ACTIONS.SET_REVIEW_NOTES,
+          notesToReview: notes,
+          allPrompts: prompts,
+        });
+      })
+      .catch(({ message }) => {
+        setIsLoading(false);
+        setError(message);
+      });
+  }, [appDispatch]);
+
   // Handle user-initiated browser-refresh
+  // (...until you add a db-field to persist a user's intra-day progress)
   const history = useHistory();
   useEffect(() => {
     if (appState.notesToReview && !appState.notesToReview.length) {
@@ -21,37 +45,15 @@ const Review = ({ appState, appDispatch }) => {
     return () => window.removeEventListener("beforeunload", confirmNavAway);
   }, [history, appState.notesToReview]);
 
-  // Fetch notesToReview && associated cues; set in appReducer
-  const url = `${API_URL}/notes/review`;
-  const reqOptions = useMemo(
-    () => ({
-      method: "GET",
-      headers: {
-        Authorization: sessionStorage.getItem("mokkoAuthToken"),
-      },
-    }),
-    []
-  );
-  const { data, status, error } = useFetch(url, reqOptions);
-  useEffect(() => {
-    if (data) {
-      appDispatch({
-        type: ACTIONS.SET_REVIEW_NOTES,
-        notesToReview: data.notes,
-        allPrompts: data.prompts,
-      });
-    }
-  }, [data, appDispatch]);
-
   return (
     <>
-      {status === REQUEST_STATUS.LOADING && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
       <Header
         page={PAGES.REVIEW}
         isLoggedIn={appState.isLoggedIn}
         appDispatch={appDispatch}
       />
-      {status === REQUEST_STATUS.ERROR ? (
+      {error ? (
         <ErrorMessage message={error} />
       ) : (
         appState.notesToReview && (

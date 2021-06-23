@@ -18,39 +18,6 @@ export const callAPI = (url, initHash) =>
     return resp.json();
   });
 
-export const useFetch = (url, initHash) => {
-  const [data, setData] = useState();
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState("idle");
-
-  useEffect(() => {
-    let isMostRecentRequest = true;
-
-    setStatus("loading");
-    setData(undefined);
-    setError(null);
-
-    callAPI(url, initHash)
-      .then((successResponse) => {
-        if (isMostRecentRequest) {
-          setData(successResponse);
-          setStatus("success");
-        }
-      })
-      .catch(({ message }) => {
-        if (isMostRecentRequest) {
-          setError(message);
-          setStatus("error");
-        }
-      });
-    return () => {
-      isMostRecentRequest = false;
-    };
-  }, [url, initHash]);
-
-  return { data, status, error };
-};
-
 export const getInitialInterval = (currentInterval) => {
   const currentIntervalIndex = BASE_INTERVALS.indexOf(currentInterval);
   if (currentIntervalIndex >= 0) {
@@ -85,6 +52,9 @@ export const buildNotePreview = (noteContent) => {
 
   return `${prunedNoteContent}...`;
 };
+
+export const buildConfirmMessage = (title, count) =>
+  `Are you sure you want to delete the "${title}" deck? It'll also delete its ${count} associated notes.`;
 
 // ====== CURRENTLY UNUSED UTILS ====== //
 
@@ -141,3 +111,37 @@ export const calcUpcomingNotes = (data = []) => {
 
   return { today, tomorrow, restOfWeek, uninitialized };
 };
+
+export const useFetch = (url, initHash) => {
+  const [data, setData] = useState();
+  const [error, setError] = useState(null);
+  const [status, setStatus] = useState("idle");
+
+  useEffect(() => {
+    let isMostRecentRequest = true;
+
+    setStatus("loading");
+    setData(undefined);
+    setError(null);
+
+    callAPI(url, initHash)
+      .then((successResponse) => {
+        if (isMostRecentRequest) {
+          setData(successResponse);
+          setStatus("success");
+        }
+      })
+      .catch(({ message }) => {
+        if (isMostRecentRequest) {
+          setError(message);
+          setStatus("error");
+        }
+      });
+    return () => {
+      isMostRecentRequest = false;
+    };
+  }, [url, initHash]);
+
+  return { data, status, error };
+};
+
