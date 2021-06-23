@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { buildConfirmMessage, callAPI } from "../utils";
 import { ACTIONS, API_URL, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
-import DeckRow from './DeckRow'
+import DeckRow from "./DeckRow";
 
 const Decks = ({ appState, appDispatch }) => {
-  const [deckNameFilter, setDeckNameFilter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
+  const [deckTitleFilter, setDeckTitleFilter] = useState("");
+  const [destroyedDeck, setDestroyedDeck] = useState("");
+  const getAllDecks = useCallback(() => {
     setIsLoading(true);
     callAPI(`${API_URL}/decks`, {
       method: "GET",
@@ -32,6 +32,8 @@ const Decks = ({ appState, appDispatch }) => {
       });
   }, [appDispatch]);
 
+  useEffect(() => getAllDecks(), [getAllDecks]);
+
   const handleDeckDelete = ({ title, id, notes }) => {
     if (window.confirm(buildConfirmMessage(title, notes.length))) {
       setIsLoading(true);
@@ -41,18 +43,40 @@ const Decks = ({ appState, appDispatch }) => {
           Authorization: sessionStorage.getItem("mokkoAuthToken"),
         },
       })
-        .then(({ destroyed_deck: destroyedDeck }) => {
-          console.log("destroyed: ", destroyedDeck);
+        .then(({ destroyed_deck }) => {
+          setDestroyedDeck(destroyed_deck);
           setIsLoading(false);
+          getAllDecks();
         })
         .catch(({ message }) => {
-          console.log("error message: ", message);
+          setError(message);
+          setIsLoading(false);
         });
     }
   };
 
+  const handleDeckTitleSubmit = (newDeckTitle, id) => {
+    setIsLoading(true);
+    callAPI(`${API_URL}/decks/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: {
+        Authorization: sessionStorage.getItem("mokkoAuthToken"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title: newDeckTitle }),
+    })
+      .then(() => {
+        setIsLoading(false);
+        getAllDecks();
+      })
+      .catch(({ message }) => {
+        setError(message);
+        setIsLoading(false);
+      });
+  };
+
   const handleFilter = ({ target: { value } }) => {
-    setDeckNameFilter(new RegExp(value, "i"));
+    setDeckTitleFilter(new RegExp(value, "i"));
   };
 
   return (
@@ -69,21 +93,23 @@ const Decks = ({ appState, appDispatch }) => {
         appState.decks && (
           <>
             <h1>Decks</h1>
-            <label htmlFor="deckNameFilter">Filter by Deck Name:</label>
+            {destroyedDeck && <p>{`The "${destroyedDeck}" deck was deleted.`}</p>}
+            <label htmlFor="deckTitleFilter">Filter by Deck Title:</label>
             <input
               type="text"
-              name="deckNameFilter"
-              id="deckNameFilter"
+              name="deckTitleFilter"
+              id="deckTitleFilter"
               onChange={handleFilter}
             />
-            {deckNameFilter
+            {deckTitleFilter
               ? appState.decks
-                  .filter(({ title }) => deckNameFilter.test(title))
+                  .filter(({ title }) => deckTitleFilter.test(title))
                   .map((deck) => (
                     <DeckRow
                       key={deck.id}
                       deck={deck}
                       handleDeckDelete={handleDeckDelete}
+                      handleDeckTitleSubmit={handleDeckTitleSubmit}
                     />
                   ))
               : appState.decks.map((deck) => (
@@ -91,6 +117,7 @@ const Decks = ({ appState, appDispatch }) => {
                     key={deck.id}
                     deck={deck}
                     handleDeckDelete={handleDeckDelete}
+                    handleDeckTitleSubmit={handleDeckTitleSubmit}
                   />
                 ))}
           </>

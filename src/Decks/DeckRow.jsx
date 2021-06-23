@@ -4,16 +4,46 @@ import DOMPurify from "dompurify";
 import marked from "marked";
 import { buildNotePreview } from "../utils";
 
-const DeckRow = ({ deck, handleDeckDelete }) => {
+const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [newDeckTitle, setNewDeckTitle] = useState("");
+
+  const handleInput = ({ target: { value } }) => {
+    setNewDeckTitle(value);
+  };
 
   return (
     <div>
       <details>
         <summary>
-          {deck.title}
-          <button>Edit</button>
-          <button onClick={() => handleDeckDelete(deck)}>Delete</button>
+          {isEditMode ? (
+            <form>
+              <label htmlFor="newDeckTitle">New Deck Title:</label>
+              <input
+                type="text"
+                name="newDeckTitle"
+                id="newDeckTitle"
+                onChange={handleInput}
+              />
+
+              <button onClick={() => setIsEditMode(false)}>Cancel</button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleDeckTitleSubmit(newDeckTitle, deck.id);
+                  setIsEditMode(false);
+                }}
+              >
+                Save
+              </button>
+            </form>
+          ) : (
+            <>
+              {deck.title}
+              <button onClick={() => setIsEditMode(true)}>Edit</button>
+              <button onClick={() => handleDeckDelete(deck)}>Delete</button>
+            </>
+          )}
         </summary>
         <ul>
           {deck.notes.map((note) => (
