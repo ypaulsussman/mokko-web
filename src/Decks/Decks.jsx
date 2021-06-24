@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { buildConfirmMessage, callAPI } from "../utils";
+import { buildConfirmMessage, callAPI, getFormData } from "../utils";
 import { ACTIONS, API_URL, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
@@ -7,6 +7,7 @@ import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import DeckRow from "./DeckRow";
 
 const Decks = ({ appState, appDispatch }) => {
+  const [isCreateMode, setIsCreateMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [deckTitleFilter, setDeckTitleFilter] = useState("");
@@ -55,10 +56,10 @@ const Decks = ({ appState, appDispatch }) => {
     }
   };
 
-  const handleDeckTitleSubmit = (newDeckTitle, id) => {
+  const handleDeckTitleSubmit = (newDeckTitle, id, newDeck = false) => {
     setIsLoading(true);
     callAPI(`${API_URL}/decks/${encodeURIComponent(id)}`, {
-      method: "PUT",
+      method: newDeck ? "POST" : "PUT",
       headers: {
         Authorization: sessionStorage.getItem("mokkoAuthToken"),
         "Content-Type": "application/json",
@@ -93,7 +94,32 @@ const Decks = ({ appState, appDispatch }) => {
         appState.decks && (
           <>
             <h1>Decks</h1>
-            {destroyedDeck && <p>{`The "${destroyedDeck}" deck was deleted.`}</p>}
+            {isCreateMode ? (
+              <form name="newDeck">
+                <label htmlFor="deckTitle">New Deck Title:</label>
+                <input type="text" name="deckTitle" id="deckTitle" />
+
+                <button onClick={() => setIsCreateMode(false)}>Cancel</button>
+                <button
+                  type="submit"
+                  onClick={() => {
+                    handleDeckTitleSubmit(
+                      getFormData('form[name="newDeck"]').deckTitle,
+                      "",
+                      true
+                    );
+                    setIsCreateMode(false);
+                  }}
+                >
+                  Save
+                </button>
+              </form>
+            ) : (
+              <button onClick={() => setIsCreateMode(true)}>Add A Deck</button>
+            )}
+            {destroyedDeck && (
+              <p>{`The "${destroyedDeck}" deck was deleted.`}</p>
+            )}
             <label htmlFor="deckTitleFilter">Filter by Deck Title:</label>
             <input
               type="text"

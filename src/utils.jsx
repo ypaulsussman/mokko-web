@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { BASE_INTERVALS, NOTE_PREVIEW_LENGTH } from "./constants";
 
-export const getFormData = () => {
-  const formElement = document.querySelector("form");
+export const getFormData = (selector = "form") => {
+  const formElement = document.querySelector(selector);
   const formData = new FormData(formElement).entries();
   return Array.from(formData).reduce((acc, [k, v]) => {
     acc[k] = v;
