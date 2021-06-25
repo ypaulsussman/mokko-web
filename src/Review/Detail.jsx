@@ -11,7 +11,23 @@ export const TextDisplay = ({ text }) => (
   />
 );
 
-export const NoteDetail = ({ appDispatch, note, displayButtons }) => {
+export const NoteDetails = ({ note }) => (
+  <>
+    <p>{`Deck: ${note.deck.title}`}</p>
+    {note.tags.length && (
+      <>
+        <ul>
+          Tags:
+          {note.tags.map(({ id, content }) => (
+            <li key={id}>{content}</li>
+          ))}
+        </ul>
+      </>
+    )}
+  </>
+);
+
+export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
   const [displayNoteDetails, setDisplayNoteDetails] = useState(false);
 
   return (
@@ -56,21 +72,7 @@ export const NoteDetail = ({ appDispatch, note, displayButtons }) => {
         </button>
       )}
 
-      {displayNoteDetails && (
-        <>
-          <p>{`Deck: ${note.deck.title}`}</p>
-          {note.tags.length && (
-            <>
-              <ul>
-                Tags:
-                {note.tags.map(({ id, content }) => (
-                  <li key={id}>{content}</li>
-                ))}
-              </ul>
-            </>
-          )}
-        </>
-      )}
+      {displayNoteDetails && <NoteDetails note={note} />}
     </>
   );
 };

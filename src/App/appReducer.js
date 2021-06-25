@@ -38,6 +38,12 @@ export const appReducer = (state, action) => {
         },
       };
 
+    case ACTIONS.SET_DECKS:
+      return {
+        ...state,
+        decks: action.decks,
+      };
+
     case ACTIONS.SET_MOKKOSTATUS:
       return {
         ...state,
@@ -47,6 +53,12 @@ export const appReducer = (state, action) => {
         },
       };
 
+    case ACTIONS.SET_NOTE:
+      return {
+        ...state,
+        note: action.note,
+      };
+      
     case ACTIONS.SET_REVIEW_NOTES:
       return {
         ...state,
@@ -60,13 +72,7 @@ export const appReducer = (state, action) => {
         },
       };
 
-    case ACTIONS.SET_DECKS:
-      return {
-        ...state,
-        decks: action.decks,
-      };
-
     default:
-      return state;
+      throw new Error("That is *not* a valid action.type, my friend.");
   }
 };

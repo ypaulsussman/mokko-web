@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { ACTIONS, API_URL, BASE_INTERVALS } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-import { NoteDetail, PromptDetail, TextDisplay } from "./Detail";
+import { ReviewNote, PromptDetail, TextDisplay } from "./Detail";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [cue, setCue] = useState(
     currentNote.prompts_remaining.length
       ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
@@ -35,25 +36,25 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
     callAPI(`${API_URL}/mokkos`, reqOptions)
       .then(() => {
         setIsLoading(false);
-        console.log("success!");
         appDispatch({ type: ACTIONS.MOKKO_SUCCESS, noteId: currentNote.id });
       })
       .catch(({ message }) => {
         setIsLoading(false);
-        console.log("error: ", message);
+        setError(message);
       });
   };
 
   return (
     <>
       {isLoading && <LoadingSpinner />}
-
+      {error && <p>{`Something went wrong: {error}`}</p>}
+      
       <section
         className={
           mokkoStage === 1 ? "review-form__main-col" : "review-form__left-col"
         }
       >
-        <NoteDetail
+        <ReviewNote
           appDispatch={appDispatch}
           note={currentNote}
           displayButtons={{
@@ -76,7 +77,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
               appDispatch={appDispatch}
             />
           ) : (
-            <NoteDetail
+            <ReviewNote
               appDispatch={appDispatch}
               note={cue}
               displayButtons={{

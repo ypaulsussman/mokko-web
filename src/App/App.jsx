@@ -9,6 +9,7 @@ import Login from "../Login/Login";
 import Lander from "../Lander/Lander";
 import Review from "../Review/Review";
 import Decks from "../Decks/Decks";
+import Note from "../Note/Note";
 
 import { appReducer, initialAppState } from "./appReducer";
 import "./App.css";
@@ -37,6 +38,13 @@ const App = () => {
           <Route path="/decks">
             {appState.isLoggedIn ? (
               <Decks appState={appState} appDispatch={appDispatch} />
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Route>
+          <Route path="/notes/:id">
+            {appState.isLoggedIn ? (
+              <Note appState={appState} appDispatch={appDispatch} />
             ) : (
               <Redirect to="/" />
             )}
