@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 import marked from "marked";
 import { ACTIONS } from "../constants";
@@ -11,19 +12,32 @@ export const TextDisplay = ({ text }) => (
   />
 );
 
-export const NoteDetails = ({ note }) => (
+export const NoteDetails = ({ note: { deck, mokkos = [], tags = [] } }) => (
   <>
-    <p>{`Deck: ${note.deck.title}`}</p>
-    {note.tags.length && (
+    <h2>Deck:</h2>
+    <p>{`${deck.title}`}</p>
+    {tags.length ? (
       <>
+        <h2>Tags:</h2>
         <ul>
-          Tags:
-          {note.tags.map(({ id, content }) => (
+          {tags.map(({ id, content }) => (
             <li key={id}>{content}</li>
           ))}
         </ul>
       </>
-    )}
+    ) : null}
+    {mokkos.length ? (
+      <>
+        <h2>Mokkos:</h2>
+        {mokkos.map(({ created_at, cue_id, content, id }) => (
+          <details key={id}>
+            <summary>{new Date(created_at).toDateString()}</summary>
+            <p>{content}</p>
+            <Link to={`/cues/${cue_id}`}>See Cue</Link>
+          </details>
+        ))}
+      </>
+    ) : null}
   </>
 );
 
@@ -43,7 +57,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
               setDisplayNoteDetails(!displayNoteDetails);
             }}
           >
-            Details
+            See Details
           </button>
           <button
             type="button"
@@ -52,7 +66,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
               alert("this is a noop for now dog");
             }}
           >
-            Edit
+            Edit Note
           </button>
         </>
       )}

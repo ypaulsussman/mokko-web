@@ -48,10 +48,10 @@ const Note = ({ appState, appDispatch }) => {
         appState.note && (
           <>
             <h1>Note:</h1>
-            <button>Edit</button>
-            <button>Delete</button>
             <TextDisplay text={appState.note.content} />
             <NoteDetails note={appState.note} />
+            <button>Edit</button>
+            <button>Delete</button>
           </>
         )
       )}

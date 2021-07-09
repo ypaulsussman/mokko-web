@@ -115,7 +115,7 @@ const Decks = ({ appState, appDispatch }) => {
                 </button>
               </form>
             ) : (
-              <button onClick={() => setIsCreateMode(true)}>Add A Deck</button>
+              <button onClick={() => setIsCreateMode(true)}>Add Deck</button>
             )}
             {destroyedDeck && (
               <p>{`The "${destroyedDeck}" deck was deleted.`}</p>

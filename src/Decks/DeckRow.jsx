@@ -55,7 +55,7 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
                   ),
                 }}
               ></div>
-              <Link to={`/notes/${note.id}`}>Details</Link>
+              <Link to={`/notes/${note.id}`}>See Note</Link>
             </li>
           ))}
         </ul>
