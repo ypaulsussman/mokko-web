@@ -48,7 +48,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
     <>
       {isLoading && <LoadingSpinner />}
       {error && <p>{`Something went wrong: {error}`}</p>}
-      
+
       <section
         className={
           mokkoStage === 1 ? "review-form__main-col" : "review-form__left-col"
@@ -105,6 +105,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
               }
             />
 
+            {/* @YTODO: add `selected` attr to `<options>` below  */}
             <label htmlFor="mokkoInterval">
               see this note again in
               <select

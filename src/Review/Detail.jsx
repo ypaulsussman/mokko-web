@@ -117,6 +117,7 @@ export const PromptDetail = ({
       {displayCueSelect && (
         <>
           <label htmlFor="mokkoPrompt">Select a different prompt:</label>
+          {/* @YTODO: add `selected` attr to `<options>` below  */}
           <select
             id="mokkoPrompt"
             name="mokkoPrompt"

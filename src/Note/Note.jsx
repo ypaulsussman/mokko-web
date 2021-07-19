@@ -24,7 +24,8 @@ const Note = ({ appState, appDispatch }) => {
         setIsLoading(false);
         appDispatch({
           type: ACTIONS.SET_NOTE,
-          note: data,
+          note: data.note,
+          selectableDecks: data.selectable_decks,
         });
       })
       .catch(({ message }) => {
@@ -50,7 +51,8 @@ const Note = ({ appState, appDispatch }) => {
           setIsLoading(false);
           appDispatch({
             type: ACTIONS.SET_NOTE,
-            note: data,
+            note: data.note,
+            selectableDecks: data.selectable_decks,
           });
         })
         .catch(({ message }) => {
@@ -76,6 +78,7 @@ const Note = ({ appState, appDispatch }) => {
         (isEditing ? (
           <EditNote
             note={appState.note}
+            selectableDecks={appState.selectableDecks}
             setIsEditing={setIsEditing}
             updateNote={updateNote}
           />
