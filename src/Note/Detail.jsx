@@ -33,15 +33,17 @@ export const EditNote = ({
         name="content"
         onChange={handleChange}
       />
-      <select name="deck_id" onChange={handleChange}>
+      <select
+        name="deck_id"
+        onChange={handleChange}
+        value={
+          noteChanges.deck_id
+            ? selectableDecks.find(({ id }) => noteChanges.deck_id === id).id
+            : selectableDecks.find(({ id }) => note.deck.id === id).id
+        }
+      >
         {selectableDecks.map(({ id, title }) => (
-          <option
-            key={id}
-            value={id}
-            selected={
-              id === (noteChanges.deck_id ? noteChanges.deck_id : note.deck.id)
-            }
-          >
+          <option key={id} value={id}>
             {title}
           </option>
         ))}

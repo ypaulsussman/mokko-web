@@ -105,7 +105,6 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
               }
             />
 
-            {/* @YTODO: add `selected` attr to `<options>` below  */}
             <label htmlFor="mokkoInterval">
               see this note again in
               <select

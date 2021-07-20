@@ -122,9 +122,10 @@ export const PromptDetail = ({
             id="mokkoPrompt"
             name="mokkoPrompt"
             onChange={(e) => {
-              setCue(allPrompts.find((p) => p.id === e.target.value));
+              setCue(allPrompts.find(({ id }) => id === e.target.value));
               setDisplayCueSelect(false);
             }}
+            value={prompt.id}
           >
             {promptsRemaining.map((promptId) => {
               return (
