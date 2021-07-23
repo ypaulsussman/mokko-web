@@ -4,16 +4,89 @@ import { NoteDetails, TextDisplay } from "../Review/Detail";
 export const EditNote = ({
   note,
   selectableDecks,
+  selectableTags,
   setIsEditing,
   updateNote,
 }) => {
-  const [noteChanges, setNoteChanges] = useState({});
+  const [newTag, setNewTag] = useState("");
+  const [noteChanges, setNoteChanges] = useState({
+    tagsToAdd: [],
+    tagsToRemove: [],
+  });
+
   const handleChange = ({ target: { name, value } }) => {
     setNoteChanges((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
+
+  const addTag = () => {
+    const preexistingTag = selectableTags.find(
+      ({ content }) => newTag === content
+    );
+    if (preexistingTag) {
+      setNoteChanges((prevState) => ({
+        ...prevState,
+        tagsToAdd: [...prevState.tagsToAdd, preexistingTag],
+      }));
+      setNewTag("");
+    } else {
+      setNoteChanges((prevState) => ({
+        ...prevState,
+        tagsToAdd: [...prevState.tagsToAdd, { content: newTag, id: null }],
+      }));
+      setNewTag("");
+    }
+  };
+
+  const removeTag = (tagToRemove) => {
+    const newlyAddedTag = noteChanges.tagsToAdd.find(
+      ({ content }) => content === tagToRemove.content
+    );
+    if (newlyAddedTag) {
+      setNoteChanges((prevState) => ({
+        ...prevState,
+        tagsToAdd: prevState.tagsToAdd.filter(
+          ({ content }) => content !== tagToRemove.content
+        ),
+      }));
+    } else {
+      setNoteChanges((prevState) => ({
+        ...prevState,
+        tagsToRemove: [...prevState.tagsToRemove, tagToRemove],
+      }));
+    }
+  };
+
+  const undoRemoveTag = (tagToUndo) => {
+    setNoteChanges((prevState) => ({
+      ...prevState,
+      tagsToRemove: prevState.tagsToRemove.filter(
+        ({ id }) => id !== tagToUndo.id
+      ),
+    }));
+  };
+
+  const tagsToRemoveIds = noteChanges.tagsToRemove.map(({ id }) => id);
+  const buildTagList = () =>
+    [...note.tags, ...noteChanges.tagsToAdd].map(({ id, content }) =>
+      tagsToRemoveIds.includes(id) ? (
+        <li key={content}>
+          <p className="add-strikethrough-to-me-later">{content}</p>
+          <button type="button" onClick={() => undoRemoveTag({ id, content })}>
+            Undo Delete
+          </button>
+        </li>
+      ) : (
+        <li key={content}>
+          <p>{content}</p>
+          <button type="button" onClick={() => removeTag({ id, content })}>
+            Delete
+          </button>
+        </li>
+      )
+    );
 
   return (
     <>
@@ -33,6 +106,7 @@ export const EditNote = ({
         name="content"
         onChange={handleChange}
       />
+      <h2>Deck:</h2>
       <select
         name="deck_id"
         onChange={handleChange}
@@ -48,6 +122,24 @@ export const EditNote = ({
           </option>
         ))}
       </select>
+      <h2>Tags:</h2>
+      <ul>
+        {note.tags.length || noteChanges.tagsToAdd.length
+          ? buildTagList()
+          : null}
+        <li key="add-tag">
+          <input
+            type="text"
+            name="newTag"
+            value={newTag}
+            aria-label="Add a new tag"
+            onChange={(e) => setNewTag(e.target.value)}
+          />
+          <button type="button" onClick={() => addTag()}>
+            Add Tag
+          </button>
+        </li>
+      </ul>
     </>
   );
 };
