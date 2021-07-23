@@ -14,10 +14,10 @@ export const EditNote = ({
     tagsToRemove: [],
   });
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = ({ target: { checked, name, type, value } }) => {
     setNoteChanges((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -99,6 +99,13 @@ export const EditNote = ({
       >
         Save Changes
       </button>
+      <button
+        onClick={() => {
+          setIsEditing(false);
+        }}
+      >
+        Cancel
+      </button>
       <textarea
         rows="20"
         cols="80"
@@ -106,6 +113,16 @@ export const EditNote = ({
         name="content"
         onChange={handleChange}
       />
+      <label>
+        <input
+          type="checkbox"
+          name="active"
+          checked={noteChanges.active}
+          defaultChecked={note.active}
+          onChange={handleChange}
+        />
+        Keep this note in rotation
+      </label>
       <h2>Deck:</h2>
       <select
         name="deck_id"
@@ -148,6 +165,17 @@ export const ReadNote = ({ note, setIsEditing }) => (
   <>
     <h1>Note:</h1>
     <TextDisplay text={note.content} />
+    <h2>Details:</h2>
+    <dl>
+      <dt>In Rotation: </dt>
+      <dd>{note.active ? "Yes" : "No"}</dd>
+      {note.active ? (
+        <>
+          <dt>Next Occurrence:</dt>
+          <dd>{note.next_occurrence}</dd>
+        </>
+      ) : null}
+    </dl>
     <NoteDetails note={note} />
     <button onClick={() => setIsEditing(true)}>Edit</button>
     <button>Delete</button>
