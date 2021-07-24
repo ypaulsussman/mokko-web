@@ -10,6 +10,8 @@ export const EditNote = ({
 }) => {
   const [newTag, setNewTag] = useState("");
   const [noteChanges, setNoteChanges] = useState({
+    active: note.active,
+    next_occurrence: note.next_occurrence,
     tagsToAdd: [],
     tagsToRemove: [],
   });
@@ -113,16 +115,28 @@ export const EditNote = ({
         name="content"
         onChange={handleChange}
       />
-      <label>
-        <input
-          type="checkbox"
-          name="active"
-          checked={noteChanges.active}
-          defaultChecked={note.active}
-          onChange={handleChange}
-        />
-        Keep this note in rotation
-      </label>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            name="active"
+            checked={noteChanges.active}
+            onChange={handleChange}
+          />
+          Keep this note in rotation
+        </label>
+      </div>
+      <div>
+        <label>
+          Next surface this note on:
+          <input
+            type="text"
+            name="next_occurrence"
+            value={noteChanges.next_occurrence}
+            onChange={handleChange}
+          />
+        </label>
+      </div>
       <h2>Deck:</h2>
       <select
         name="deck_id"
