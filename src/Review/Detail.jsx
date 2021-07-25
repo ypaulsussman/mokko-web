@@ -59,7 +59,9 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
           >
             See Details
           </button>
-          <button
+          {/* @TODO: how to implement this w/ [1] current `EditNote` component, and
+           [2] state-management in ReviewForm? */}
+          {/* <button
             type="button"
             className="edit-button"
             onClick={() => {
@@ -67,7 +69,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
             }}
           >
             Edit Note
-          </button>
+          </button> */}
         </>
       )}
 
