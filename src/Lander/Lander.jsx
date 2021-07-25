@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { PAGES } from "../constants";
+import { ACTIONS, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 
 const LanderIntro = () => (
@@ -22,7 +22,17 @@ const LanderLinks = () => (
   </>
 );
 
-const Lander = ({ appState: { isLoggedIn }, appDispatch }) => {
+const Lander = ({ appState: { isLoggedIn, redirectMessage }, appDispatch }) => {
+  // On unmount, clear any redirect message
+  useEffect(() => {
+    return () => {
+      appDispatch({
+        type: ACTIONS.SET_REDIRECT_MESSAGE,
+        message: null,
+      });
+    };
+  }, [appDispatch]);
+
   return (
     <div>
       <Header
@@ -32,6 +42,8 @@ const Lander = ({ appState: { isLoggedIn }, appDispatch }) => {
       />
       <h1>Welcome to Mokko!</h1>
 
+      {redirectMessage ? <p>{redirectMessage}</p> : null}
+      
       {isLoggedIn ? <LanderLinks appDispatch={appDispatch} /> : <LanderIntro />}
     </div>
   );

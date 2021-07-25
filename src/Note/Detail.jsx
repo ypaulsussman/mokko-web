@@ -175,7 +175,7 @@ export const EditNote = ({
   );
 };
 
-export const ReadNote = ({ note, setIsEditing }) => (
+export const ReadNote = ({ deleteNote, note, setIsEditing }) => (
   <>
     <h1>Note:</h1>
     <TextDisplay text={note.content} />
@@ -192,6 +192,6 @@ export const ReadNote = ({ note, setIsEditing }) => (
     </dl>
     <NoteDetails note={note} />
     <button onClick={() => setIsEditing(true)}>Edit</button>
-    <button>Delete</button>
+    <button onClick={deleteNote}>Delete</button>
   </>
 );

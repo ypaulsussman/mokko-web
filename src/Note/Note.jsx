@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { callAPI } from "../utils";
 import { ACTIONS, API_URL, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
@@ -11,6 +11,7 @@ const Note = ({ appState, appDispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  let history = useHistory();
   let { id } = useParams();
   const getNote = useCallback(() => {
     setIsLoading(true);
@@ -65,6 +66,44 @@ const Note = ({ appState, appDispatch }) => {
     [appDispatch, id]
   );
 
+  const buildConfirmDeleteMsg = () => {
+    const baseString = "Are you sure you want to delete this note?";
+    const mokkoCount = appState.note.mokkos.length;
+    if (mokkoCount) {
+      return (
+        baseString +
+        ` It'll also delete ${mokkoCount} mokko${
+          appState.note.mokkos.length > 1 ? "s" : ""
+        }.`
+      );
+    } else {
+      return baseString;
+    }
+  };
+  const deleteNote = () => {
+    if (window.confirm(buildConfirmDeleteMsg())) {
+      setIsLoading(true);
+      callAPI(`${API_URL}/notes/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: sessionStorage.getItem("mokkoAuthToken"),
+        },
+      })
+        .then(() => {
+          setIsLoading(false);
+          appDispatch({
+            type: ACTIONS.SET_REDIRECT_MESSAGE,
+            message: "Note successfully deleted.",
+          });
+          history.push("/");
+        })
+        .catch(({ message }) => {
+          setError(message);
+          setIsLoading(false);
+        });
+    }
+  };
+
   return (
     <>
       {isLoading && <LoadingSpinner />}
@@ -86,7 +125,11 @@ const Note = ({ appState, appDispatch }) => {
             updateNote={updateNote}
           />
         ) : (
-          <ReadNote note={appState.note} setIsEditing={setIsEditing} />
+          <ReadNote
+            deleteNote={deleteNote}
+            note={appState.note}
+            setIsEditing={setIsEditing}
+          />
         ))
       )}
     </>

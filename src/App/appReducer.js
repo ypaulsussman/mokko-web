@@ -58,9 +58,15 @@ export const appReducer = (state, action) => {
         ...state,
         note: action.note,
         selectableDecks: action.selectableDecks,
-        selectableTags: action.selectableTags
+        selectableTags: action.selectableTags,
       };
-      
+
+    case ACTIONS.SET_REDIRECT_MESSAGE:
+      return {
+        ...state,
+        redirectMessage: action.message,
+      };
+
     case ACTIONS.SET_REVIEW_NOTES:
       return {
         ...state,
