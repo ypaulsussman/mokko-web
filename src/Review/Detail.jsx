@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import DOMPurify from "dompurify";
-import marked from "marked";
 import { ACTIONS } from "../constants";
-
-export const TextDisplay = ({ text }) => (
-  <div
-    dangerouslySetInnerHTML={{
-      __html: marked(DOMPurify.sanitize(text)),
-    }}
-  />
-);
+import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 export const NoteDetails = ({ note: { deck, mokkos = [], tags = [] } }) => (
   <>
@@ -109,17 +100,16 @@ export const PromptDetail = ({
       {promptsRemaining.length > 1 && (
         <button
           type="button"
-          onClick={() => setDisplayCueSelect(true)}
+          onClick={() => setDisplayCueSelect(!displayCueSelect)}
           className="display-cue-select-button"
         >
-          Change Prompt
+          {displayCueSelect ? "Close" : "Change Prompt"}
         </button>
       )}
 
       {displayCueSelect && (
         <>
           <label htmlFor="mokkoPrompt">Select a different prompt:</label>
-          {/* @YTODO: add `selected` attr to `<options>` below  */}
           <select
             id="mokkoPrompt"
             name="mokkoPrompt"

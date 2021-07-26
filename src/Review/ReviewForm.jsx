@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { ACTIONS, API_URL, BASE_INTERVALS } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-import { ReviewNote, PromptDetail, TextDisplay } from "./Detail";
+import { ReviewNote, PromptDetail } from "./Detail";
+import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
@@ -54,6 +55,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
           mokkoStage === 1 ? "review-form__main-col" : "review-form__left-col"
         }
       >
+        <h2>Note:</h2>
         <ReviewNote
           appDispatch={appDispatch}
           note={currentNote}
@@ -63,11 +65,17 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
           }}
         />
 
-        {mokkoStage === 3 && <TextDisplay text={cue.content} />}
+        {mokkoStage === 3 && (
+          <>
+            <h2>Prompt:</h2>
+            <TextDisplay text={cue.content} />
+          </>
+        )}
       </section>
 
       {mokkoStage === 2 && (
         <section className="right-col">
+          <h2>Prompt:</h2>
           {cueIsPrompt ? (
             <PromptDetail
               prompt={cue}
@@ -91,9 +99,10 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
 
       {mokkoStage === 3 && (
         <section className="right-col">
+          <h2 id="mokko">Your Mokko:</h2>
           <form>
-            <label htmlFor="mokkoValue">your mokko:</label>
             <textarea
+              aria-labelledby="mokko"
               id="mokkoValue"
               name="mokkoValue"
               value={mokkoValue}
@@ -104,7 +113,6 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
                 })
               }
             />
-
             <label htmlFor="mokkoInterval">
               see this note again in
               <select

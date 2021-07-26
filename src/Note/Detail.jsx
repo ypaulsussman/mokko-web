@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { NoteDetails, TextDisplay } from "../Review/Detail";
+import { NoteDetails } from "../Review/Detail";
+import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 export const EditNote = ({
   note,
