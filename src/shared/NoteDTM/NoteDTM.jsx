@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export const NoteDetails = ({ note: { deck, mokkos = [], tags = [] } }) => (
+export const NoteDTM = ({ note: { deck, mokkos = [], tags = [] } }) => (
   <>
     <h2>Deck:</h2>
     <p>{`${deck.title}`}</p>

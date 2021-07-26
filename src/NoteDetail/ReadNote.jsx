@@ -1,5 +1,5 @@
 import React from "react";
-import { NoteDetails } from "../shared/NoteDetails/NoteDetails";
+import { NoteDTM } from "../shared/NoteDTM/NoteDTM";
 import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 const ReadNote = ({ deleteNote, note, setIsEditing }) => (
@@ -17,7 +17,7 @@ const ReadNote = ({ deleteNote, note, setIsEditing }) => (
         </>
       ) : null}
     </dl>
-    <NoteDetails note={note} />
+    <NoteDTM note={note} />
     <button onClick={() => setIsEditing(true)}>Edit</button>
     <button onClick={deleteNote}>Delete</button>
   </>

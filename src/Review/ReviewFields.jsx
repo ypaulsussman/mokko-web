@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { ACTIONS, BASE_INTERVALS } from "../constants";
-import { NoteDetails } from "../shared/NoteDetails/NoteDetails";
+import { NoteDTM } from "../shared/NoteDTM/NoteDTM";
 import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
-  const [displayNoteDetails, setDisplayNoteDetails] = useState(false);
+  const [displayNoteDTM, setDisplayNoteDTM] = useState(false);
 
   return (
     <>
@@ -16,7 +16,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
             type="button"
             className="details-button"
             onClick={() => {
-              setDisplayNoteDetails(!displayNoteDetails);
+              setDisplayNoteDTM(!displayNoteDTM);
             }}
           >
             See Details
@@ -50,7 +50,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
         </button>
       )}
 
-      {displayNoteDetails && <NoteDetails note={note} />}
+      {displayNoteDTM && <NoteDTM note={note} />}
     </>
   );
 };
