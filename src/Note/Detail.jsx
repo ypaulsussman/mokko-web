@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NoteDetails } from "../Review/Detail";
+import { NoteDetails } from "../shared/NoteDetails/NoteDetails";
 import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 export const EditNote = ({
@@ -180,7 +180,7 @@ export const ReadNote = ({ deleteNote, note, setIsEditing }) => (
   <>
     <h1>Note:</h1>
     <TextDisplay text={note.content} />
-    <h2>Details:</h2>
+    <h2>Status:</h2>
     <dl>
       <dt>In Rotation: </dt>
       <dd>{note.active ? "Yes" : "No"}</dd>

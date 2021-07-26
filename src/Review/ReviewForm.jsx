@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ACTIONS, API_URL, BASE_INTERVALS } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-import { ReviewNote, PromptDetail } from "./Detail";
+import { ReviewNote, ReviewPrompt } from "./Detail";
 import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
@@ -77,7 +77,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
         <section className="right-col">
           <h2>Prompt:</h2>
           {cueIsPrompt ? (
-            <PromptDetail
+            <ReviewPrompt
               prompt={cue}
               promptsRemaining={currentNote.prompts_remaining}
               setCue={setCue}
@@ -147,4 +147,5 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
     </>
   );
 };
+
 export default ReviewForm;
