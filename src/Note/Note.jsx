@@ -5,7 +5,8 @@ import { ACTIONS, API_URL, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
-import { EditNote, ReadNote } from "./Detail";
+import EditNote from "../shared/EditNote/EditNote";
+import ReadNote from "./ReadNote";
 
 const Note = ({ appState, appDispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
