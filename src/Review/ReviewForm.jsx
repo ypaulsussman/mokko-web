@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ACTIONS, API_URL, BASE_INTERVALS } from "../constants";
+import { ACTIONS, API_URL } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-import { ReviewNote, ReviewPrompt } from "./Detail";
+import { ReviewNote, ReviewPrompt, ReviewMokko } from "./ReviewFields";
 import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
@@ -98,51 +98,12 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
       )}
 
       {mokkoStage === 3 && (
-        <section className="right-col">
-          <h2 id="mokko">Your Mokko:</h2>
-          <form>
-            <textarea
-              aria-labelledby="mokko"
-              id="mokkoValue"
-              name="mokkoValue"
-              value={mokkoValue}
-              onChange={(e) =>
-                appDispatch({
-                  type: ACTIONS.SET_MOKKOSTATUS,
-                  mokkoStatus: { mokkoValue: e.target.value },
-                })
-              }
-            />
-            <label htmlFor="mokkoInterval">
-              see this note again in
-              <select
-                id="mokkoInterval"
-                name="mokkoInterval"
-                value={mokkoInterval}
-                onChange={(e) =>
-                  appDispatch({
-                    type: ACTIONS.SET_MOKKOSTATUS,
-                    mokkoStatus: { mokkoInterval: e.target.value },
-                  })
-                }
-              >
-                {BASE_INTERVALS.map((interval) => (
-                  <option key={interval} value={interval}>
-                    {interval}
-                  </option>
-                ))}
-              </select>
-              {`day${mokkoInterval === 1 ? "" : "s"}`}
-            </label>
-            <button
-              type="submit"
-              className="progress-stage-button"
-              onClick={submitMokko}
-            >
-              Cool!
-            </button>
-          </form>
-        </section>
+        <ReviewMokko 
+        appDispatch={appDispatch}
+        mokkoInterval={mokkoInterval}
+        mokkoValue={mokkoValue}
+        submitMokko={submitMokko}
+        />
       )}
     </>
   );

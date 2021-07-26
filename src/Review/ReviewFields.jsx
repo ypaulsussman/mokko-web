@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ACTIONS } from "../constants";
+import { ACTIONS, BASE_INTERVALS } from "../constants";
 import { NoteDetails } from "../shared/NoteDetails/NoteDetails";
 import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
 
@@ -114,5 +114,60 @@ export const ReviewPrompt = ({
         Cool!
       </button>
     </>
+  );
+};
+
+export const ReviewMokko = ({
+  appDispatch,
+  mokkoInterval,
+  mokkoValue,
+  submitMokko,
+}) => {
+  return (
+    <section className="right-col">
+      <h2 id="mokko">Your Mokko:</h2>
+      <form>
+        <textarea
+          aria-labelledby="mokko"
+          id="mokkoValue"
+          name="mokkoValue"
+          value={mokkoValue}
+          onChange={(e) =>
+            appDispatch({
+              type: ACTIONS.SET_MOKKOSTATUS,
+              mokkoStatus: { mokkoValue: e.target.value },
+            })
+          }
+        />
+        <label htmlFor="mokkoInterval">
+          see this note again in
+          <select
+            id="mokkoInterval"
+            name="mokkoInterval"
+            value={mokkoInterval}
+            onChange={(e) =>
+              appDispatch({
+                type: ACTIONS.SET_MOKKOSTATUS,
+                mokkoStatus: { mokkoInterval: e.target.value },
+              })
+            }
+          >
+            {BASE_INTERVALS.map((interval) => (
+              <option key={interval} value={interval}>
+                {interval}
+              </option>
+            ))}
+          </select>
+          {`day${mokkoInterval === 1 ? "" : "s"}`}
+        </label>
+        <button
+          type="submit"
+          className="progress-stage-button"
+          onClick={submitMokko}
+        >
+          Cool!
+        </button>
+      </form>
+    </section>
   );
 };
