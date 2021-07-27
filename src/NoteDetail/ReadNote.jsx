@@ -1,6 +1,6 @@
 import React from "react";
 import { NoteDTM } from "../shared/NoteDTM/NoteDTM";
-import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
+import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 const ReadNote = ({ deleteNote, note, setIsEditing }) => (
   <>

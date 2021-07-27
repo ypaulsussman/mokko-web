@@ -9,6 +9,8 @@ import Login from "../Login/Login";
 import Lander from "../Lander/Lander";
 import Review from "../Review/Review";
 import Decks from "../Decks/Decks";
+import Notes from "../Notes/Notes";
+import NewNote from "../NewNote/NewNote";
 import NoteDetail from "../NoteDetail/NoteDetail";
 
 import { appReducer, initialAppState } from "./appReducer";
@@ -21,6 +23,7 @@ const App = () => {
     <div className="App">
       <Router>
         <Switch>
+          {/* @TODO: there's got to be a cleaner way to do client-side redirects */}
           <Route path="/login">
             {appState.isLoggedIn ? (
               <Redirect to="/" />
@@ -38,6 +41,20 @@ const App = () => {
           <Route path="/decks">
             {appState.isLoggedIn ? (
               <Decks appState={appState} appDispatch={appDispatch} />
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Route>
+          <Route path="/notes/new">
+            {appState.isLoggedIn ? (
+              <NewNote appState={appState} appDispatch={appDispatch} />
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Route>
+          <Route path="/notes">
+            {appState.isLoggedIn ? (
+              <Notes appState={appState} appDispatch={appDispatch} />
             ) : (
               <Redirect to="/" />
             )}

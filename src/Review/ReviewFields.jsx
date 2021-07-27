@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ACTIONS, BASE_INTERVALS } from "../constants";
 import { NoteDTM } from "../shared/NoteDTM/NoteDTM";
-import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
+import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
   const [displayNoteDTM, setDisplayNoteDTM] = useState(false);

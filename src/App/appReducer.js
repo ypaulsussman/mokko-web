@@ -61,6 +61,12 @@ export const appReducer = (state, action) => {
         selectableTags: action.selectableTags,
       };
 
+    case ACTIONS.SET_NOTES:
+      return {
+        ...state,
+        paginatedNotes: action.notes,
+      };
+
     case ACTIONS.SET_REDIRECT_MESSAGE:
       return {
         ...state,

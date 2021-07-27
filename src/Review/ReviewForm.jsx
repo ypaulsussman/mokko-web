@@ -3,7 +3,7 @@ import { ACTIONS, API_URL } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import { ReviewNote, ReviewPrompt, ReviewMokko } from "./ReviewFields";
-import { TextDisplay } from "../shared/TextDisplay/TextDisplay";
+import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
