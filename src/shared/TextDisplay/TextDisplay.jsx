@@ -4,6 +4,7 @@ import marked from "marked";
 
 const TextDisplay = ({ text }) => (
   <div
+    className="content"
     dangerouslySetInnerHTML={{
       __html: marked(DOMPurify.sanitize(text)),
     }}

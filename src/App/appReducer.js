@@ -65,6 +65,7 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         paginatedNotes: action.notes,
+        noteCount: action.noteCount
       };
 
     case ACTIONS.SET_REDIRECT_MESSAGE:

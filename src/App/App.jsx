@@ -14,6 +14,7 @@ import NewNote from "../NewNote/NewNote";
 import NoteDetail from "../NoteDetail/NoteDetail";
 
 import { appReducer, initialAppState } from "./appReducer";
+import "bulma/css/bulma.min.css";
 import "./App.css";
 
 const App = () => {
@@ -52,16 +53,16 @@ const App = () => {
               <Redirect to="/" />
             )}
           </Route>
-          <Route path="/notes">
+          <Route path="/notes/:id">
             {appState.isLoggedIn ? (
-              <Notes appState={appState} appDispatch={appDispatch} />
+              <NoteDetail appState={appState} appDispatch={appDispatch} />
             ) : (
               <Redirect to="/" />
             )}
           </Route>
-          <Route path="/notes/:id">
+          <Route path="/notes">
             {appState.isLoggedIn ? (
-              <NoteDetail appState={appState} appDispatch={appDispatch} />
+              <Notes appState={appState} appDispatch={appDispatch} />
             ) : (
               <Redirect to="/" />
             )}
