@@ -1,5 +1,10 @@
-import { useState, useEffect } from "react";
-import { BASE_INTERVALS, NOTE_PREVIEW_LENGTH } from "./constants";
+import { useEffect, useState } from "react";
+import {
+  ACTIONS,
+  API_URL,
+  BASE_INTERVALS,
+  NOTE_PREVIEW_LENGTH,
+} from "./constants";
 
 export const getFormData = (selector = "form") => {
   const formElement = document.querySelector(selector);
@@ -53,8 +58,47 @@ export const buildNotePreview = (noteContent) => {
   return `${prunedNoteContent}...`;
 };
 
-export const buildConfirmMessage = (title, count) =>
-  `Are you sure you want to delete the "${title}" deck? It'll also delete its ${count} associated notes.`;
+export const getAllDecks = (appDispatch, setIsLoading, setError) => {
+  setIsLoading(true);
+  callAPI(`${API_URL}/decks`, {
+    method: "GET",
+    headers: {
+      Authorization: sessionStorage.getItem("mokkoAuthToken"),
+    },
+  })
+    .then((data) => {
+      setIsLoading(false);
+      appDispatch({
+        type: ACTIONS.SET_DECKS,
+        decks: data,
+      });
+    })
+    .catch(({ message }) => {
+      setIsLoading(false);
+      setError(message);
+    });
+};
+
+export const getAllTags = (appDispatch, setIsLoading, setError) => {
+  setIsLoading(true);
+  callAPI(`${API_URL}/tags`, {
+    method: "GET",
+    headers: {
+      Authorization: sessionStorage.getItem("mokkoAuthToken"),
+    },
+  })
+    .then((data) => {
+      setIsLoading(false);
+      appDispatch({
+        type: ACTIONS.SET_TAGS,
+        tags: data,
+      });
+    })
+    .catch(({ message }) => {
+      setIsLoading(false);
+      setError(message);
+    });
+};
 
 // ====== CURRENTLY UNUSED UTILS ====== //
 
@@ -144,4 +188,3 @@ export const useFetch = (url, initHash) => {
 
   return { data, status, error };
 };
-

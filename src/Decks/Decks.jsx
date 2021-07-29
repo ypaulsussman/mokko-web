@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { buildConfirmMessage, callAPI, getFormData } from "../utils";
-import { ACTIONS, API_URL, PAGES } from "../constants";
+import React, { useEffect, useState } from "react";
+import { callAPI, getAllDecks, getFormData } from "../utils";
+import { API_URL, PAGES } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
@@ -12,31 +12,17 @@ const Decks = ({ appState, appDispatch }) => {
   const [error, setError] = useState("");
   const [deckTitleFilter, setDeckTitleFilter] = useState("");
   const [destroyedDeck, setDestroyedDeck] = useState("");
-  const getAllDecks = useCallback(() => {
-    setIsLoading(true);
-    callAPI(`${API_URL}/decks`, {
-      method: "GET",
-      headers: {
-        Authorization: sessionStorage.getItem("mokkoAuthToken"),
-      },
-    })
-      .then((data) => {
-        setIsLoading(false);
-        appDispatch({
-          type: ACTIONS.SET_DECKS,
-          decks: data,
-        });
-      })
-      .catch(({ message }) => {
-        setIsLoading(false);
-        setError(message);
-      });
-  }, [appDispatch]);
 
-  useEffect(() => getAllDecks(), [getAllDecks]);
+  useEffect(
+    () => getAllDecks(appDispatch, setIsLoading, setError),
+    [appDispatch, setIsLoading, setError]
+  );
 
+  const buildConfirmDeleteMsg = (title, count) =>
+    `Are you sure you want to delete the "${title}" deck? It'll also delete its ${count} associated notes.`;
+    
   const handleDeckDelete = ({ title, id, notes }) => {
-    if (window.confirm(buildConfirmMessage(title, notes.length))) {
+    if (window.confirm(buildConfirmDeleteMsg(title, notes.length))) {
       setIsLoading(true);
       callAPI(`${API_URL}/decks/${encodeURIComponent(id)}`, {
         method: "DELETE",

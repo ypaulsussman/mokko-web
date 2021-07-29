@@ -65,7 +65,7 @@ export const appReducer = (state, action) => {
       return {
         ...state,
         paginatedNotes: action.notes,
-        noteCount: action.noteCount
+        noteCount: action.noteCount,
       };
 
     case ACTIONS.SET_REDIRECT_MESSAGE:
@@ -85,6 +85,12 @@ export const appReducer = (state, action) => {
             action.notesToReview[0].current_interval
           ),
         },
+      };
+
+    case ACTIONS.SET_TAGS:
+      return {
+        ...state,
+        tags: action.tags,
       };
 
     default:

@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { callAPI } from "../utils";
 import { ACTIONS, API_URL, PAGES } from "../constants";
-import Header from "../shared/Header/Header";
-import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import EditNote from "../shared/EditNote/EditNote";
+import Header from "../shared/Header/Header";
+import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
+import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ReadNote from "./ReadNote";
 
 const Note = ({ appState, appDispatch }) => {
@@ -122,8 +122,11 @@ const Note = ({ appState, appDispatch }) => {
             note={appState.note}
             selectableDecks={appState.selectableDecks}
             selectableTags={appState.selectableTags}
-            setIsEditing={setIsEditing}
-            updateNote={updateNote}
+            saveFunction={(noteChanges) => {
+              updateNote(noteChanges);
+              setIsEditing(false);
+            }}
+            cancelFunction={() => setIsEditing(false)}
           />
         ) : (
           <ReadNote

@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 
+const newNoteData = {
+  initialized: false,
+  active: true,
+  next_occurrence: null,
+  content: "",
+  deck: { id: "" },
+  tags: [],
+};
+
 const EditNote = ({
-  note,
+  cancelFunction,
+  note = newNoteData,
   selectableDecks,
   selectableTags,
-  setIsEditing,
-  updateNote,
+  saveFunction,
 }) => {
   const [newTag, setNewTag] = useState("");
   const [noteChanges, setNoteChanges] = useState({
@@ -89,24 +98,20 @@ const EditNote = ({
       )
     );
 
+  const getSelectedDeck = () =>
+    (noteChanges.deck_id
+      ? // if the deck's changed, grab that
+        selectableDecks.find(({ id }) => noteChanges.deck_id === id).id
+      : // if the note already has a deck, grab that
+        selectableDecks.find(({ id }) => note.deck.id === id)?.id) ||
+    // otherwise, grab the first deck
+    selectableDecks[0].id;
+
   return (
     <>
       <h1>Edit Note:</h1>
-      <button
-        onClick={() => {
-          updateNote(noteChanges);
-          setIsEditing(false);
-        }}
-      >
-        Save Changes
-      </button>
-      <button
-        onClick={() => {
-          setIsEditing(false);
-        }}
-      >
-        Cancel
-      </button>
+      <button onClick={() => saveFunction(noteChanges)}>Save Changes</button>
+      <button onClick={cancelFunction}>Cancel</button>
       <textarea
         rows="20"
         cols="80"
@@ -125,27 +130,22 @@ const EditNote = ({
           Keep this note in rotation
         </label>
       </div>
-      <div>
-        <label>
-          Next surface this note on:
-          <input
-            type="text"
-            name="next_occurrence"
-            value={noteChanges.next_occurrence}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
+      {note.next_occurrence && (
+        <div>
+          <label>
+            Next surface this note on:
+            {/* @TODO: add yyyy-mm-dd validation */}
+            <input
+              type="text"
+              name="next_occurrence"
+              value={noteChanges.next_occurrence}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+      )}
       <h2>Deck:</h2>
-      <select
-        name="deck_id"
-        onChange={handleChange}
-        value={
-          noteChanges.deck_id
-            ? selectableDecks.find(({ id }) => noteChanges.deck_id === id).id
-            : selectableDecks.find(({ id }) => note.deck.id === id).id
-        }
-      >
+      <select name="deck_id" onChange={handleChange} value={getSelectedDeck()}>
         {selectableDecks.map(({ id, title }) => (
           <option key={id} value={id}>
             {title}
@@ -158,6 +158,7 @@ const EditNote = ({
           ? buildTagList()
           : null}
         <li key="add-tag">
+          {/* @TODO: Add <datalist> autocomplete */}
           <input
             type="text"
             name="newTag"
