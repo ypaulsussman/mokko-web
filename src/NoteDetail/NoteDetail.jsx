@@ -28,7 +28,7 @@ const Note = ({ appState, appDispatch }) => {
           type: ACTIONS.SET_NOTE,
           note: data.note,
           selectableDecks: data.selectable_decks,
-          selectableTags: data.selectable_tags,
+          tags: data.tags,
         });
       })
       .catch(({ message }) => {
@@ -56,7 +56,7 @@ const Note = ({ appState, appDispatch }) => {
             type: ACTIONS.SET_NOTE,
             note: data.note,
             selectableDecks: data.selectable_decks,
-            selectableTags: data.selectable_tags,
+            tags: data.tags,
           });
         })
         .catch(({ message }) => {
@@ -121,7 +121,7 @@ const Note = ({ appState, appDispatch }) => {
           <EditNote
             note={appState.note}
             selectableDecks={appState.selectableDecks}
-            selectableTags={appState.selectableTags}
+            tags={appState.tags}
             saveFunction={(noteChanges) => {
               updateNote(noteChanges);
               setIsEditing(false);

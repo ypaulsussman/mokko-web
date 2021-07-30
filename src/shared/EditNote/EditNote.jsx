@@ -13,7 +13,7 @@ const EditNote = ({
   cancelFunction,
   note = newNoteData,
   selectableDecks,
-  selectableTags,
+  tags,
   saveFunction,
 }) => {
   const [newTag, setNewTag] = useState("");
@@ -32,7 +32,7 @@ const EditNote = ({
   };
 
   const addTag = () => {
-    const preexistingTag = selectableTags.find(
+    const preexistingTag = tags.find(
       ({ content }) => newTag === content
     );
     if (preexistingTag) {

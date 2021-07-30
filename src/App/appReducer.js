@@ -58,7 +58,7 @@ export const appReducer = (state, action) => {
         ...state,
         note: action.note,
         selectableDecks: action.selectableDecks,
-        selectableTags: action.selectableTags,
+        tags: action.tags,
       };
 
     case ACTIONS.SET_NOTES:

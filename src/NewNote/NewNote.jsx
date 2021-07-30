@@ -47,7 +47,7 @@ const NewNote = ({ appState, appDispatch }) => {
             type: ACTIONS.SET_NOTE,
             note: data.note,
             selectableDecks: data.selectable_decks,
-            selectableTags: data.selectable_tags,
+            tags: data.tags,
           });
           history.push("/notes");
         })
@@ -76,7 +76,7 @@ const NewNote = ({ appState, appDispatch }) => {
             <EditNote
               // note={undefined}
               selectableDecks={appState.decks}
-              selectableTags={appState.tags}
+              tags={appState.tags}
               saveFunction={(noteChanges) => createNote(noteChanges)}
               cancelFunction={() => history.push("/notes")}
             />
