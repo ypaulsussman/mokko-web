@@ -11,6 +11,7 @@ const newNoteData = {
 
 const EditNote = ({
   cancelFunction,
+  isNewNote = false,
   note = newNoteData,
   selectableDecks,
   tags,
@@ -32,9 +33,7 @@ const EditNote = ({
   };
 
   const addTag = () => {
-    const preexistingTag = tags.find(
-      ({ content }) => newTag === content
-    );
+    const preexistingTag = tags.find(({ content }) => newTag === content);
     if (preexistingTag) {
       setNoteChanges((prevState) => ({
         ...prevState,
@@ -110,7 +109,19 @@ const EditNote = ({
   return (
     <>
       <h1>Edit Note:</h1>
-      <button onClick={() => saveFunction(noteChanges)}>Save Changes</button>
+      <button
+        onClick={() => {
+          // If it's a new note and no deck's been selected, 
+          // choose the one visible in the deck <select> field
+          const noteData =
+            isNewNote && !noteChanges.deck_id
+              ? { ...noteChanges, deck_id: selectableDecks[0].id }
+              : noteChanges;
+          saveFunction(noteData);
+        }}
+      >
+        Save Changes
+      </button>
       <button onClick={cancelFunction}>Cancel</button>
       <textarea
         rows="20"

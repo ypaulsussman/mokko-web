@@ -62,6 +62,16 @@ const Notes = ({ appState, appDispatch }) => {
   );
   const totalPages = Math.ceil(appState.noteCount / NOTES_PER_PAGE);
 
+  // On unmount, clear any redirect message
+  useEffect(() => {
+    return () => {
+      appDispatch({
+        type: ACTIONS.SET_REDIRECT_MESSAGE,
+        message: null,
+      });
+    };
+  }, [appDispatch]);
+
   const getNotes = useCallback(() => {
     setIsLoading(true);
     callAPI(`${API_URL}${getPageURL(currentPage)}`, {
@@ -99,6 +109,8 @@ const Notes = ({ appState, appDispatch }) => {
       ) : (
         <>
           <h1>Notes</h1>
+          {appState.redirectMessage ? <p>{appState.redirectMessage}</p> : null}
+
           <Link to="/notes/new">New Note</Link>
           <div className="delete-me-later">
             <i>(...search and sort forthcoming)</i>
@@ -106,7 +118,9 @@ const Notes = ({ appState, appDispatch }) => {
 
           {appState.paginatedNotes &&
             appState.paginatedNotes.map(({ content, id }) => (
-              <TextDisplay key={id} text={content} />
+              <Link to={`/notes/${id}`}>
+                <TextDisplay key={id} text={content} />
+              </Link>
             ))}
 
           {appState.noteCount && (

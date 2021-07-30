@@ -16,8 +16,11 @@ const LanderLinks = () => (
     </p>
     <p>[ or ]</p>
     <p>
-      CRUD your <Link to="/decks">Decks</Link>, <Link to="/notes">Notes</Link>,
-      or <Link to="/tags">Tags</Link>
+      CRUD your <Link to="/decks">Decks</Link>, <Link to="/notes">Notes</Link>,{" "}
+      <del>
+        or <Link to="/tags">Tags</Link>
+      </del>{" "}
+      (<i>not yet!</i>)
     </p>
   </>
 );
@@ -43,7 +46,7 @@ const Lander = ({ appState: { isLoggedIn, redirectMessage }, appDispatch }) => {
       <h1>Welcome to Mokko!</h1>
 
       {redirectMessage ? <p>{redirectMessage}</p> : null}
-      
+
       {isLoggedIn ? <LanderLinks appDispatch={appDispatch} /> : <LanderIntro />}
     </div>
   );

@@ -33,13 +33,7 @@ const NewNote = ({ appState, appDispatch }) => {
           "Content-Type": "application/json",
           Authorization: sessionStorage.getItem("mokkoAuthToken"),
         },
-        // TODO: yeah, this is hacky AF... but how to replace it w/o
-        // further entangling/coupling <EditNote /> ?
-        body: JSON.stringify(
-          noteChanges.deck_id
-            ? noteChanges
-            : { ...noteChanges, deck_id: appState.decks[0].id }
-        ),
+        body: JSON.stringify(noteChanges),
       })
         .then((data) => {
           setIsLoading(false);
@@ -49,6 +43,11 @@ const NewNote = ({ appState, appDispatch }) => {
             selectableDecks: data.selectable_decks,
             tags: data.tags,
           });
+          appDispatch({
+            type: ACTIONS.SET_REDIRECT_MESSAGE,
+            message: "Note successfully created.",
+          });
+
           history.push("/notes");
         })
         .catch(({ message }) => {
@@ -56,7 +55,7 @@ const NewNote = ({ appState, appDispatch }) => {
           setError(message);
         });
     },
-    [appDispatch, history, appState.decks]
+    [appDispatch, history]
   );
 
   return (
@@ -74,7 +73,7 @@ const NewNote = ({ appState, appDispatch }) => {
           <h1>Create Note</h1>
           {appState.decks && appState.tags ? (
             <EditNote
-              // note={undefined}
+              isNewNote
               selectableDecks={appState.decks}
               tags={appState.tags}
               saveFunction={(noteChanges) => createNote(noteChanges)}
