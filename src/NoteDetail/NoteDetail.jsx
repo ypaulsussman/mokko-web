@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { callAPI } from "../utils";
-import { ACTIONS, API_URL, PAGES } from "../constants";
+import { ACTIONS, API_URL } from "../constants";
 import EditNote from "../shared/EditNote/EditNote";
 import Header from "../shared/Header/Header";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
@@ -108,11 +108,7 @@ const Note = ({ appState, appDispatch }) => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Header
-        page={PAGES.DECKS}
-        isLoggedIn={appState.isLoggedIn}
-        appDispatch={appDispatch}
-      />
+      <Header isLoggedIn={appState.isLoggedIn} appDispatch={appDispatch} />
       {error ? (
         <ErrorMessage message={error} />
       ) : (

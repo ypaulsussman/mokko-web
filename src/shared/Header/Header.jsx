@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { ACTIONS, PAGES } from "../../constants";
+import { ACTIONS } from "../../constants";
 
-const Header = ({ page, isLoggedIn, appDispatch }) => {
+const Header = ({ appDispatch, extraLinks, isLoggedIn }) => {
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const history = useHistory();
   const logOut = () => {
     sessionStorage.removeItem("mokkoAuthToken");
@@ -12,31 +13,71 @@ const Header = ({ page, isLoggedIn, appDispatch }) => {
 
   const navItems = [];
 
-  [PAGES.LOGIN, PAGES.REVIEW, PAGES.DECKS].includes(page) &&
+  extraLinks &&
+    extraLinks.forEach(({ text, url }) =>
+      navItems.push(
+        <Link
+          className={`navbar-item ${isBurgerOpen ? "is-tab" : ""}`}
+          key={url}
+          to={url}
+        >
+          {text}
+        </Link>
+      )
+    );
+
+  window.location.pathname !== "/" &&
     navItems.push(
-      <Link key="home-link" to="/">
+      <Link
+        className={`navbar-item ${isBurgerOpen ? "is-tab" : ""}`}
+        key="home-link"
+        to="/"
+      >
         Home
       </Link>
     );
 
   isLoggedIn &&
     navItems.push(
-      <Link key="logout-link" to="/" onClick={logOut}>
+      <Link
+        className={`navbar-item ${isBurgerOpen ? "is-tab" : ""}`}
+        key="logout-link"
+        to="/"
+        onClick={logOut}
+      >
         Log Out
       </Link>
     );
 
-  page === PAGES.LANDER &&
-    !isLoggedIn &&
+  !isLoggedIn &&
     navItems.push(
-      <Link key="login-link" to="/login">
+      <Link
+        className={`navbar-item ${isBurgerOpen ? "is-tab" : ""}`}
+        key="login-link"
+        to="/login"
+      >
         Log In
       </Link>
     );
 
   return (
     <header>
-      <nav>{navItems}</nav>
+      <button
+        className={`navbar-burger ${isBurgerOpen ? "is-active" : ""}`}
+        aria-label="Expand Menu"
+        aria-expanded={isBurgerOpen}
+        onClick={() => setIsBurgerOpen(!isBurgerOpen)}
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+
+      <nav className="navbar" role="navigation" aria-label="main navigation">
+        <div className={`navbar-menu ${isBurgerOpen ? "is-active" : ""}`}>
+          <div className="navbar-end">{navItems}</div>
+        </div>
+      </nav>
     </header>
   );
 };

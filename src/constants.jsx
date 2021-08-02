@@ -8,7 +8,7 @@ export const ACTIONS = {
   SET_NOTES: "SET_NOTES",
   SET_REDIRECT_MESSAGE: "SET_REDIRECT_MESSAGE",
   SET_REVIEW_NOTES: "SET_REVIEW_NOTES",
-  SET_TAGS: "SET_TAGS"
+  SET_TAGS: "SET_TAGS",
 };
 
 export const API_URL =
@@ -19,13 +19,6 @@ export const API_URL =
 export const BASE_INTERVALS = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
 
 export const NOTE_PREVIEW_LENGTH = 48;
-
-export const PAGES = {
-  LANDER: "lander",
-  LOGIN: "login",
-  REVIEW: "review",
-  DECKS: "decks"
-};
 
 export const REQUEST_STATUS = {
   LOADING: "loading",

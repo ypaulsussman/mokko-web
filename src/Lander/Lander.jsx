@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ACTIONS, PAGES } from "../constants";
+import { ACTIONS } from "../constants";
 import Header from "../shared/Header/Header";
 
 const LanderIntro = () => (
@@ -38,11 +38,7 @@ const Lander = ({ appState: { isLoggedIn, redirectMessage }, appDispatch }) => {
 
   return (
     <div>
-      <Header
-        page={PAGES.LANDER}
-        isLoggedIn={isLoggedIn}
-        appDispatch={appDispatch}
-      />
+      <Header isLoggedIn={isLoggedIn} appDispatch={appDispatch} />
       <h1>Welcome to Mokko!</h1>
 
       {redirectMessage ? <p>{redirectMessage}</p> : null}

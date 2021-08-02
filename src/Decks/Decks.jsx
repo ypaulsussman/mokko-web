@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { callAPI, getAllDecks, getFormData } from "../utils";
-import { API_URL, PAGES } from "../constants";
+import { API_URL } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
@@ -20,7 +20,7 @@ const Decks = ({ appState, appDispatch }) => {
 
   const buildConfirmDeleteMsg = (title, count) =>
     `Are you sure you want to delete the "${title}" deck? It'll also delete its ${count} associated notes.`;
-    
+
   const handleDeckDelete = ({ title, id, notes }) => {
     if (window.confirm(buildConfirmDeleteMsg(title, notes.length))) {
       setIsLoading(true);
@@ -69,11 +69,7 @@ const Decks = ({ appState, appDispatch }) => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Header
-        page={PAGES.DECKS}
-        isLoggedIn={appState.isLoggedIn}
-        appDispatch={appDispatch}
-      />
+      <Header isLoggedIn={appState.isLoggedIn} appDispatch={appDispatch} />
       {error ? (
         <ErrorMessage message={error} />
       ) : (

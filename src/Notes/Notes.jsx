@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { callAPI } from "../utils";
-import { ACTIONS, API_URL, PAGES } from "../constants";
+import { ACTIONS, API_URL } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
@@ -30,7 +30,7 @@ const buildPaginationLinks = (totalPages, setCurrentPage) => {
         2
       </Link>
       {totalPages > PAGE_LINKS_IN_PAGINATOR ? (
-        <li>
+        <li aria-hidden>
           <span className="pagination-ellipsis">&hellip;</span>
         </li>
       ) : null}
@@ -38,7 +38,7 @@ const buildPaginationLinks = (totalPages, setCurrentPage) => {
         to={getPageURL(totalPages - 1)}
         onClick={() => setCurrentPage(totalPages - 1)}
         className="pagination-link"
-        aria-label="Go to page 1"
+        aria-label={`Go to page ${totalPages - 1}`}
       >
         {totalPages - 1}
       </Link>
@@ -46,7 +46,7 @@ const buildPaginationLinks = (totalPages, setCurrentPage) => {
         to={getPageURL(totalPages)}
         onClick={() => setCurrentPage(totalPages)}
         className="pagination-link"
-        aria-label="Go to page 1"
+        aria-label={`Go to page ${totalPages}`}
       >
         {totalPages}
       </Link>
@@ -100,9 +100,9 @@ const Notes = ({ appState, appDispatch }) => {
     <>
       {isLoading && <LoadingSpinner />}
       <Header
-        page={PAGES.DECKS}
         isLoggedIn={appState.isLoggedIn}
         appDispatch={appDispatch}
+        extraLinks={[{ text: "New Note", url: "/notes/new" }]}
       />
       {error ? (
         <ErrorMessage message={error} />
@@ -111,21 +111,20 @@ const Notes = ({ appState, appDispatch }) => {
           <h1>Notes</h1>
           {appState.redirectMessage ? <p>{appState.redirectMessage}</p> : null}
 
-          <Link to="/notes/new">New Note</Link>
           <div className="delete-me-later">
             <i>(...search and sort forthcoming)</i>
           </div>
 
           {appState.paginatedNotes &&
             appState.paginatedNotes.map(({ content, id }) => (
-              <Link to={`/notes/${id}`}>
-                <TextDisplay key={id} text={content} />
+              <Link key={id} to={`/notes/${id}`}>
+                <TextDisplay text={content} />
               </Link>
             ))}
 
           {appState.noteCount && (
             <nav
-              className="pagination"
+              className="pagination is-centered"
               role="navigation"
               aria-label="pagination"
             >

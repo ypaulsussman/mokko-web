@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { callAPI } from "../utils";
-import { ACTIONS, API_URL, PAGES } from "../constants";
+import { ACTIONS, API_URL } from "../constants";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
 import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
@@ -48,11 +48,7 @@ const Review = ({ appState, appDispatch }) => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Header
-        page={PAGES.REVIEW}
-        isLoggedIn={appState.isLoggedIn}
-        appDispatch={appDispatch}
-      />
+      <Header isLoggedIn={appState.isLoggedIn} appDispatch={appDispatch} />
       {error ? (
         <ErrorMessage message={error} />
       ) : (

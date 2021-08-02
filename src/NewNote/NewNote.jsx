@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { ACTIONS, API_URL, PAGES } from "../constants";
+import { ACTIONS, API_URL } from "../constants";
 import { callAPI, getAllDecks, getAllTags } from "../utils";
 import Header from "../shared/Header/Header";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
@@ -61,11 +61,7 @@ const NewNote = ({ appState, appDispatch }) => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Header
-        page={PAGES.DECKS}
-        isLoggedIn={appState.isLoggedIn}
-        appDispatch={appDispatch}
-      />
+      <Header isLoggedIn={appState.isLoggedIn} appDispatch={appDispatch} />
       {error ? (
         <ErrorMessage message={error} />
       ) : (
