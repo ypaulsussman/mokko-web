@@ -7,8 +7,8 @@ const Header = ({ appDispatch, extraLinks, isLoggedIn }) => {
   const history = useHistory();
   const logOut = () => {
     sessionStorage.removeItem("mokkoAuthToken");
-    appDispatch({ type: ACTIONS.LOG_OUT });
     history.push("/");
+    appDispatch({ type: ACTIONS.LOG_OUT });
   };
 
   const navItems = [];
