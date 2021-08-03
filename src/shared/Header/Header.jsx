@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { ACTIONS } from "../../constants";
 
 const Header = ({ appDispatch, extraLinks, isLoggedIn }) => {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const history = useHistory();
+  const location = useLocation();
   const logOut = () => {
     sessionStorage.removeItem("mokkoAuthToken");
     history.push("/");
@@ -26,7 +27,7 @@ const Header = ({ appDispatch, extraLinks, isLoggedIn }) => {
       )
     );
 
-  window.location.pathname !== "/" &&
+  location.pathname !== "/" &&
     navItems.push(
       <Link
         className={`navbar-item ${isBurgerOpen ? "is-tab" : ""}`}

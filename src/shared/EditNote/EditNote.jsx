@@ -108,7 +108,6 @@ const EditNote = ({
 
   return (
     <>
-      <h1 class="title is-1">Edit Note:</h1>
       <button
         onClick={() => {
           // If it's a new note and no deck's been selected, 

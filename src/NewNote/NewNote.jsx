@@ -10,7 +10,7 @@ import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 const NewNote = ({ appState, appDispatch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  let history = useHistory();
+  const history = useHistory();
 
   useEffect(() => {
     if (!appState.decks) {

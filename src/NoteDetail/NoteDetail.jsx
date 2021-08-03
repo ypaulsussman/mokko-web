@@ -12,8 +12,8 @@ const Note = ({ appState, appDispatch }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  let history = useHistory();
-  let { id } = useParams();
+  const history = useHistory();
+  const { id } = useParams();
   const getNote = useCallback(() => {
     setIsLoading(true);
     callAPI(`${API_URL}/notes/${id}`, {
@@ -114,16 +114,19 @@ const Note = ({ appState, appDispatch }) => {
       ) : (
         appState.note &&
         (isEditing ? (
-          <EditNote
-            note={appState.note}
-            selectableDecks={appState.selectableDecks}
-            tags={appState.tags}
-            saveFunction={(noteChanges) => {
-              updateNote(noteChanges);
-              setIsEditing(false);
-            }}
-            cancelFunction={() => setIsEditing(false)}
-          />
+          <>
+            <h1 class="title is-1">Edit Note:</h1>
+            <EditNote
+              note={appState.note}
+              selectableDecks={appState.selectableDecks}
+              tags={appState.tags}
+              saveFunction={(noteChanges) => {
+                updateNote(noteChanges);
+                setIsEditing(false);
+              }}
+              cancelFunction={() => setIsEditing(false)}
+            />
+          </>
         ) : (
           <ReadNote
             deleteNote={deleteNote}
