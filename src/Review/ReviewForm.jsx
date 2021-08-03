@@ -50,9 +50,9 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
       {isLoading && <LoadingSpinner />}
       {error && <p>{`Something went wrong: {error}`}</p>}
       <h1 className="is-sr-only">Create a Mokko:</h1>
-      <div className="columns is-centered">
+      <div className="columns is-centered is-desktop">
         <section
-          className={`column is-two-fifths ${mokkoStage > 1 ? "mr-6" : ""}`}
+          className={`column is-two-fifths-desktop ${mokkoStage > 1 ? "mr-6" : ""}`}
         >
           <h2 className="subtitle is-3"> Note:</h2>
           <ReviewNote
@@ -73,7 +73,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
         </section>
 
         {mokkoStage === 2 && (
-          <section className="column is-two-fifths">
+          <section className="column is-two-fifths-desktop">
             <h2 className="subtitle is-3">Prompt:</h2>
             {cueIsPrompt ? (
               <ReviewPrompt
