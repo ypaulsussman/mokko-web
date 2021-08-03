@@ -83,14 +83,22 @@ const EditNote = ({
       tagsToRemoveIds.includes(id) ? (
         <li key={content}>
           <p className="add-strikethrough-to-me-later">{content}</p>
-          <button type="button" onClick={() => undoRemoveTag({ id, content })}>
+          <button
+            className="button"
+            type="button"
+            onClick={() => undoRemoveTag({ id, content })}
+          >
             Undo Delete
           </button>
         </li>
       ) : (
         <li key={content}>
           <p>{content}</p>
-          <button type="button" onClick={() => removeTag({ id, content })}>
+          <button
+            className="button"
+            type="button"
+            onClick={() => removeTag({ id, content })}
+          >
             Delete
           </button>
         </li>
@@ -109,8 +117,9 @@ const EditNote = ({
   return (
     <>
       <button
+        className="button"
         onClick={() => {
-          // If it's a new note and no deck's been selected, 
+          // If it's a new note and no deck's been selected,
           // choose the one visible in the deck <select> field
           const noteData =
             isNewNote && !noteChanges.deck_id
@@ -121,7 +130,9 @@ const EditNote = ({
       >
         Save Changes
       </button>
-      <button onClick={cancelFunction}>Cancel</button>
+      <button className="button" onClick={cancelFunction}>
+        Cancel
+      </button>
       <textarea
         rows="20"
         cols="80"
@@ -176,7 +187,7 @@ const EditNote = ({
             aria-label="Add a new tag"
             onChange={(e) => setNewTag(e.target.value)}
           />
-          <button type="button" onClick={() => addTag()}>
+          <button className="button" type="button" onClick={() => addTag()}>
             Add Tag
           </button>
         </li>

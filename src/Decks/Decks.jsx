@@ -81,8 +81,14 @@ const Decks = ({ appState, appDispatch }) => {
                 <label htmlFor="deckTitle">New Deck Title:</label>
                 <input type="text" name="deckTitle" id="deckTitle" />
 
-                <button onClick={() => setIsCreateMode(false)}>Cancel</button>
                 <button
+                  className="button"
+                  onClick={() => setIsCreateMode(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="button"
                   type="submit"
                   onClick={() => {
                     handleDeckTitleSubmit(
@@ -97,7 +103,9 @@ const Decks = ({ appState, appDispatch }) => {
                 </button>
               </form>
             ) : (
-              <button onClick={() => setIsCreateMode(true)}>Add Deck</button>
+              <button className="button" onClick={() => setIsCreateMode(true)}>
+                Add Deck
+              </button>
             )}
             {destroyedDeck && (
               <p>{`The "${destroyedDeck}" deck was deleted.`}</p>

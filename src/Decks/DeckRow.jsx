@@ -26,8 +26,11 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
                 onChange={handleInput}
               />
 
-              <button onClick={() => setIsEditMode(false)}>Cancel</button>
+              <button className="button" onClick={() => setIsEditMode(false)}>
+                Cancel
+              </button>
               <button
+                className="button"
                 type="button"
                 onClick={() => {
                   handleDeckTitleSubmit(newDeckTitle, deck.id);
@@ -40,8 +43,12 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
           ) : (
             <>
               {deck.title}
-              <button onClick={() => setIsEditMode(true)}>Edit</button>
-              <button onClick={() => handleDeckDelete(deck)}>Delete</button>
+              <button className="button" onClick={() => setIsEditMode(true)}>
+                Edit
+              </button>
+              <button className="button" onClick={() => handleDeckDelete(deck)}>
+                Delete
+              </button>
             </>
           )}
         </summary>

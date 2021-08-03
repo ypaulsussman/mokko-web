@@ -13,8 +13,9 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
       {displayButtons.modifierButtons && (
         <>
           <button
+            className="button"
             type="button"
-            className="details-button"
+            id="details-button"
             onClick={() => {
               setDisplayNoteDTM(!displayNoteDTM);
             }}
@@ -23,7 +24,8 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
           </button>
           {/* @TODO: how to implement this w/ [1] current `EditNote` component, and
            [2] state-management in ReviewForm? */}
-          {/* <button
+          {/* <button 
+            className="button"
             type="button"
             className="edit-button"
             onClick={() => {
@@ -37,8 +39,9 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
 
       {displayButtons.nextStageButton && (
         <button
+          className="button"
           type="button"
-          className="next-stage-button"
+          id="next-stage-button"
           onClick={() =>
             appDispatch({
               type: ACTIONS.SET_MOKKOSTATUS,
@@ -70,9 +73,10 @@ export const ReviewPrompt = ({
 
       {promptsRemaining.length > 1 && (
         <button
+          className="button"
           type="button"
           onClick={() => setDisplayCueSelect(!displayCueSelect)}
-          className="display-cue-select-button"
+          id="display-cue-select-button"
         >
           {displayCueSelect ? "Close" : "Change Prompt"}
         </button>
@@ -102,8 +106,9 @@ export const ReviewPrompt = ({
       )}
 
       <button
+        className="button"
         type="button"
-        className="next-stage-button"
+        id="next-stage-button"
         onClick={() =>
           appDispatch({
             type: ACTIONS.SET_MOKKOSTATUS,
@@ -163,8 +168,9 @@ export const ReviewMokko = ({
           {`day${mokkoInterval === 1 ? "" : "s"}`}
         </label>
         <button
+          className="button"
           type="submit"
-          className="progress-stage-button"
+          id="progress-stage-button"
           onClick={submitMokko}
         >
           Cool!

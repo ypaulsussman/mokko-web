@@ -18,8 +18,12 @@ const ReadNote = ({ deleteNote, note, setIsEditing }) => (
       ) : null}
     </dl>
     <NoteDTM note={note} />
-    <button onClick={() => setIsEditing(true)}>Edit</button>
-    <button onClick={deleteNote}>Delete</button>
+    <button className="button" onClick={() => setIsEditing(true)}>
+      Edit
+    </button>
+    <button className="button" onClick={deleteNote}>
+      Delete
+    </button>
   </>
 );
 
