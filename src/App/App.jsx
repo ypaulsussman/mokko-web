@@ -21,7 +21,11 @@ const App = () => {
 
   return (
     <div className="columns is-centered">
-      <div className="column is-two-thirds">
+      <div
+        className={`column ${
+          window.location.pathname === "/review" ? "is-full" : "is-two-thirds"
+        }`}
+      >
         <Router>
           <Switch>
             {/* @TODO: there's got to be a cleaner way to do client-side redirects */}

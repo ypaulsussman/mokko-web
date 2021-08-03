@@ -49,62 +49,62 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
     <>
       {isLoading && <LoadingSpinner />}
       {error && <p>{`Something went wrong: {error}`}</p>}
+      <h1 className="is-sr-only">Create a Mokko:</h1>
+      <div className="columns is-centered">
+        <section
+          className={`column is-two-fifths ${mokkoStage > 1 ? "mr-6" : ""}`}
+        >
+          <h2 className="subtitle is-3"> Note:</h2>
+          <ReviewNote
+            appDispatch={appDispatch}
+            note={currentNote}
+            displayButtons={{
+              modifierButtons: Boolean(mokkoStage < 3),
+              nextStageButton: Boolean(mokkoStage === 1),
+            }}
+          />
 
-      <section
-        className={
-          mokkoStage === 1 ? "review-form__main-col" : "review-form__left-col"
-        }
-      >
-        <h2>Note:</h2>
-        <ReviewNote
-          appDispatch={appDispatch}
-          note={currentNote}
-          displayButtons={{
-            modifierButtons: Boolean(mokkoStage < 3),
-            nextStageButton: Boolean(mokkoStage === 1),
-          }}
-        />
-
-        {mokkoStage === 3 && (
-          <>
-            <h2>Prompt:</h2>
-            <TextDisplay text={cue.content} />
-          </>
-        )}
-      </section>
-
-      {mokkoStage === 2 && (
-        <section className="right-col">
-          <h2>Prompt:</h2>
-          {cueIsPrompt ? (
-            <ReviewPrompt
-              prompt={cue}
-              promptsRemaining={currentNote.prompts_remaining}
-              setCue={setCue}
-              allPrompts={allPrompts}
-              appDispatch={appDispatch}
-            />
-          ) : (
-            <ReviewNote
-              appDispatch={appDispatch}
-              note={cue}
-              displayButtons={{
-                modifierButtons: true,
-                nextStageButton: true,
-              }}
-            />
+          {mokkoStage === 3 && (
+            <>
+              <h2 className="subtitle is-3">Prompt:</h2>
+              <TextDisplay text={cue.content} />
+            </>
           )}
         </section>
-      )}
 
-      {mokkoStage === 3 && (
-        <ReviewMokko 
-        appDispatch={appDispatch}
-        mokkoInterval={mokkoInterval}
-        mokkoValue={mokkoValue}
-        submitMokko={submitMokko}
-        />
-      )}
+        {mokkoStage === 2 && (
+          <section className="column is-two-fifths">
+            <h2 className="subtitle is-3">Prompt:</h2>
+            {cueIsPrompt ? (
+              <ReviewPrompt
+                prompt={cue}
+                promptsRemaining={currentNote.prompts_remaining}
+                setCue={setCue}
+                allPrompts={allPrompts}
+                appDispatch={appDispatch}
+              />
+            ) : (
+              <ReviewNote
+                appDispatch={appDispatch}
+                note={cue}
+                displayButtons={{
+                  modifierButtons: true,
+                  nextStageButton: true,
+                }}
+              />
+            )}
+          </section>
+        )}
+
+        {mokkoStage === 3 && (
+          <ReviewMokko
+            appDispatch={appDispatch}
+            mokkoInterval={mokkoInterval}
+            mokkoValue={mokkoValue}
+            submitMokko={submitMokko}
+          />
+        )}
+      </div>
     </>
   );
 };

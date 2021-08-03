@@ -124,8 +124,10 @@ export const ReviewMokko = ({
   submitMokko,
 }) => {
   return (
-    <section className="right-col">
-      <h2 id="mokko">Your Mokko:</h2>
+    <section className="column is-two-fifths">
+      <h2 className="subtitle is-3" id="mokko">
+        Your Mokko:
+      </h2>
       <form>
         <textarea
           aria-labelledby="mokko"
