@@ -135,6 +135,7 @@ export const ReviewMokko = ({
       </h2>
       <form>
         <textarea
+          className="textarea"
           aria-labelledby="mokko"
           id="mokkoValue"
           name="mokkoValue"
@@ -146,9 +147,13 @@ export const ReviewMokko = ({
             })
           }
         />
-        <label htmlFor="mokkoInterval">
-          see this note again in
+        <div className="mt-3" style={{ display: "flex", alignItems: "center" }}>
+          <p htmlFor="mokkoInterval" className="mr-1">
+            See this note again in
+          </p>
           <select
+            aria-label="Select number of days until note's next occurrence"
+            className="select"
             id="mokkoInterval"
             name="mokkoInterval"
             value={mokkoInterval}
@@ -165,8 +170,8 @@ export const ReviewMokko = ({
               </option>
             ))}
           </select>
-          {`day${mokkoInterval === 1 ? "" : "s"}`}
-        </label>
+          <p className="ml-1">{`day${mokkoInterval === 1 ? "" : "s"}`}</p>
+        </div>
         <button
           className="button"
           type="submit"
