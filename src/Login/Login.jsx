@@ -45,18 +45,31 @@ const Login = ({ appDispatch }) => {
 
       {loginFailed && <p>{loginFailed}</p>}
 
-      <h1>Sign In</h1>
-      <form onSubmit={attemptLogin}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" name="email" />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <h1 class="title is-1">Sign In</h1>
+      <div className="columns">
+        <form onSubmit={attemptLogin} className="column is-half">
+          <div class="field">
+            <label className="label" htmlFor="email">
+              Email:
+            </label>
+            <input className="input" type="email" id="email" name="email" />
+          </div>
+          <div class="field">
+            <label className="label" htmlFor="password">
+              Password:
+            </label>
+            <input
+              className="input"
+              type="password"
+              id="password"
+              name="password"
+            />
+          </div>
+          <button className="button" type="submit">
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

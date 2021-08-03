@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const ErrorMessage = ({ message }) => (
   <>
-    <h1>Huh. Something's gone wrong.</h1>
+    <h1 class="title is-1">Huh. Something's gone wrong.</h1>
     <p>The server tells us the following:</p>
     <p>{message}</p>
     <p>

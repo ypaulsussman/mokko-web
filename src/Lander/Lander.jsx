@@ -5,12 +5,12 @@ import Header from "../shared/Header/Header";
 
 const LanderIntro = () => (
   <>
-    <p>(actual description of app goals goes here... later)</p>
+    <p class="subtitle is-3">(actual description of app goals goes here... later)</p>
   </>
 );
 
 const LanderLinks = () => (
-  <>
+  <div class="subtitle is-3">
     <p>
       Start <Link to="/review">Reflecting</Link>
     </p>
@@ -22,7 +22,7 @@ const LanderLinks = () => (
       </del>{" "}
       (<i>not yet!</i>)
     </p>
-  </>
+  </div>
 );
 
 const Lander = ({ appState: { isLoggedIn, redirectMessage }, appDispatch }) => {
@@ -39,7 +39,7 @@ const Lander = ({ appState: { isLoggedIn, redirectMessage }, appDispatch }) => {
   return (
     <div>
       <Header isLoggedIn={isLoggedIn} appDispatch={appDispatch} />
-      <h1>Welcome to Mokko!</h1>
+      <h1 class="title is-1">Welcome to Mokko!</h1>
 
       {redirectMessage ? <p>{redirectMessage}</p> : null}
 

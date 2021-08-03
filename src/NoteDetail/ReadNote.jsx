@@ -4,7 +4,7 @@ import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 const ReadNote = ({ deleteNote, note, setIsEditing }) => (
   <>
-    <h1>Note:</h1>
+    <h1 class="title is-1">Note:</h1>
     <TextDisplay text={note.content} />
     <h2>Status:</h2>
     <dl>

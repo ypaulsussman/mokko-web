@@ -75,7 +75,7 @@ const Decks = ({ appState, appDispatch }) => {
       ) : (
         appState.decks && (
           <>
-            <h1>Decks</h1>
+            <h1 class="title is-1">Decks</h1>
             {isCreateMode ? (
               <form name="newDeck">
                 <label htmlFor="deckTitle">New Deck Title:</label>
