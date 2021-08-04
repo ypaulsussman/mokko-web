@@ -52,7 +52,8 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
       <h1 className="is-sr-only">Create a Mokko:</h1>
       <div className="columns is-centered is-desktop">
         <section
-          className={`column is-two-fifths-desktop ${mokkoStage > 1 ? "mr-6" : ""}`}
+          style={{ marginBottom: 0}} // Overwrites Bulma setting for `.box:not(:last-child)`
+          className={`box column is-two-fifths-desktop mt-6 ${mokkoStage > 1 ? "mr-6" : ""}`}
         >
           <h2 className="subtitle is-3"> Note:</h2>
           <ReviewNote
@@ -73,7 +74,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
         </section>
 
         {mokkoStage === 2 && (
-          <section className="column is-two-fifths-desktop">
+          <section className="box column is-two-fifths-desktop mt-6">
             <h2 className="subtitle is-3">Prompt:</h2>
             {cueIsPrompt ? (
               <ReviewPrompt

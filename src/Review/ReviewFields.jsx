@@ -86,6 +86,7 @@ export const ReviewPrompt = ({
         <>
           <label htmlFor="mokkoPrompt">Select a different prompt:</label>
           <select
+            className="select"
             id="mokkoPrompt"
             name="mokkoPrompt"
             onChange={(e) => {
@@ -129,7 +130,7 @@ export const ReviewMokko = ({
   submitMokko,
 }) => {
   return (
-    <section className="column is-two-fifths">
+    <section className="column is-two-fifths box mt-6">
       <h2 className="subtitle is-3" id="mokko">
         Your Mokko:
       </h2>
