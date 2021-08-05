@@ -66,7 +66,7 @@ const NewNote = ({ appState, appDispatch }) => {
         <ErrorMessage message={error} />
       ) : (
         <>
-          <h1 class="title is-1">Create Note</h1>
+          <h1 className="title is-1">Create Note</h1>
           {appState.decks && appState.tags ? (
             <EditNote
               isNewNote

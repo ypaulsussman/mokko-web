@@ -84,7 +84,7 @@ const EditNote = ({
         <li key={content}>
           <p className="add-strikethrough-to-me-later">{content}</p>
           <button
-            className="button"
+            className="button is-outlined"
             type="button"
             onClick={() => undoRemoveTag({ id, content })}
           >
@@ -95,7 +95,7 @@ const EditNote = ({
         <li key={content}>
           <p>{content}</p>
           <button
-            className="button"
+            className="button is-outlined"
             type="button"
             onClick={() => removeTag({ id, content })}
           >
@@ -117,7 +117,7 @@ const EditNote = ({
   return (
     <>
       <button
-        className="button"
+        className="button is-outlined"
         onClick={() => {
           // If it's a new note and no deck's been selected,
           // choose the one visible in the deck <select> field
@@ -130,7 +130,7 @@ const EditNote = ({
       >
         Save Changes
       </button>
-      <button className="button" onClick={cancelFunction}>
+      <button className="button is-outlined" onClick={cancelFunction}>
         Cancel
       </button>
       <textarea
@@ -187,7 +187,7 @@ const EditNote = ({
             aria-label="Add a new tag"
             onChange={(e) => setNewTag(e.target.value)}
           />
-          <button className="button" type="button" onClick={() => addTag()}>
+          <button className="button is-outlined" type="button" onClick={() => addTag()}>
             Add Tag
           </button>
         </li>

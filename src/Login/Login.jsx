@@ -45,16 +45,16 @@ const Login = ({ appDispatch }) => {
 
       {loginFailed && <p>{loginFailed}</p>}
 
-      <h1 class="title is-1">Sign In</h1>
+      <h1 className="title is-1">Sign In</h1>
       <div className="columns">
         <form onSubmit={attemptLogin} className="column is-half">
-          <div class="field">
+          <div className="field">
             <label className="label" htmlFor="email">
               Email:
             </label>
             <input className="input" type="email" id="email" name="email" />
           </div>
-          <div class="field">
+          <div className="field">
             <label className="label" htmlFor="password">
               Password:
             </label>
@@ -65,7 +65,7 @@ const Login = ({ appDispatch }) => {
               name="password"
             />
           </div>
-          <button className="button" type="submit">
+          <button className="button is-outlined" type="submit">
             Submit
           </button>
         </form>

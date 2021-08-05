@@ -4,7 +4,7 @@ import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 const ReadNote = ({ deleteNote, note, setIsEditing }) => (
   <>
-    <h1 class="title is-1">Note:</h1>
+    <h1 className="title is-1">Note:</h1>
     <TextDisplay text={note.content} />
     <h2>Status:</h2>
     <dl>
@@ -18,10 +18,10 @@ const ReadNote = ({ deleteNote, note, setIsEditing }) => (
       ) : null}
     </dl>
     <NoteDTM note={note} />
-    <button className="button" onClick={() => setIsEditing(true)}>
+    <button className="button is-outlined" onClick={() => setIsEditing(true)}>
       Edit
     </button>
-    <button className="button" onClick={deleteNote}>
+    <button className="button is-outlined" onClick={deleteNote}>
       Delete
     </button>
   </>

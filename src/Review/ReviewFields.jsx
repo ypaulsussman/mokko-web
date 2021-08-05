@@ -13,7 +13,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
       {displayButtons.modifierButtons && (
         <>
           <button
-            className="button"
+            className="button is-outlined mr-4"
             type="button"
             id="details-button"
             onClick={() => {
@@ -25,7 +25,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
           {/* @TODO: how to implement this w/ [1] current `EditNote` component, and
            [2] state-management in ReviewForm? */}
           {/* <button 
-            className="button"
+            className="button is-outlined"
             type="button"
             className="edit-button"
             onClick={() => {
@@ -39,7 +39,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
 
       {displayButtons.nextStageButton && (
         <button
-          className="button"
+          className="button is-outlined"
           type="button"
           id="next-stage-button"
           onClick={() =>
@@ -73,41 +73,52 @@ export const ReviewPrompt = ({
 
       {promptsRemaining.length > 1 && (
         <button
-          className="button"
+          className="button is-outlined mr-4"
           type="button"
-          onClick={() => setDisplayCueSelect(!displayCueSelect)}
+          onClick={() => setDisplayCueSelect(true)}
           id="display-cue-select-button"
         >
-          {displayCueSelect ? "Close" : "Change Prompt"}
+          Change Prompt
+          {/* {displayCueSelect ? "Close" : "Change Prompt"} */}
         </button>
       )}
 
-      {displayCueSelect && (
-        <>
-          <label htmlFor="mokkoPrompt">Select a different prompt:</label>
-          <select
-            className="select"
-            id="mokkoPrompt"
-            name="mokkoPrompt"
-            onChange={(e) => {
-              setCue(allPrompts.find(({ id }) => id === e.target.value));
-              setDisplayCueSelect(false);
-            }}
-            value={prompt.id}
-          >
-            {promptsRemaining.map((promptId) => {
-              return (
-                <option key={promptId} value={promptId}>
-                  {allPrompts.find((p) => p.id === promptId).content}
-                </option>
-              );
-            })}
-          </select>
-        </>
-      )}
+      {/* { && ( */}
+      <div className={`modal ${displayCueSelect ? "is-active" : ""}`}>
+        <div className="modal-background" />
+        <div className="modal-content">
+          <div className="box" style={{display: 'flex', alignItems: 'center'}}>
+            <label htmlFor="mokkoPrompt" className="mr-4">Select a different prompt:</label>
+            <select
+              className="select"
+              id="mokkoPrompt"
+              name="mokkoPrompt"
+              onChange={(e) => {
+                setCue(allPrompts.find(({ id }) => id === e.target.value));
+                setDisplayCueSelect(false);
+              }}
+              value={prompt.id}
+            >
+              {promptsRemaining.map((promptId) => {
+                return (
+                  <option key={promptId} value={promptId}>
+                    {allPrompts.find((p) => p.id === promptId).content}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+        <button
+          className="modal-close is-large"
+          aria-label="Close"
+          onClick={() => setDisplayCueSelect(false)}
+        />
+      </div>
+      {/* )} */}
 
       <button
-        className="button"
+        className="button is-outlined"
         type="button"
         id="next-stage-button"
         onClick={() =>
@@ -148,7 +159,7 @@ export const ReviewMokko = ({
             })
           }
         />
-        <div className="mt-3" style={{ display: "flex", alignItems: "center" }}>
+        <div className="mt-5" style={{ display: "flex", alignItems: "center" }}>
           <p htmlFor="mokkoInterval" className="mr-1">
             See this note again in
           </p>
@@ -174,7 +185,7 @@ export const ReviewMokko = ({
           <p className="ml-1">{`day${mokkoInterval === 1 ? "" : "s"}`}</p>
         </div>
         <button
-          className="button"
+          className="button is-outlined mt-5"
           type="submit"
           id="progress-stage-button"
           onClick={submitMokko}

@@ -75,20 +75,20 @@ const Decks = ({ appState, appDispatch }) => {
       ) : (
         appState.decks && (
           <>
-            <h1 class="title is-1">Decks</h1>
+            <h1 className="title is-1">Decks</h1>
             {isCreateMode ? (
               <form name="newDeck">
                 <label htmlFor="deckTitle">New Deck Title:</label>
                 <input type="text" name="deckTitle" id="deckTitle" />
 
                 <button
-                  className="button"
+                  className="button is-outlined"
                   onClick={() => setIsCreateMode(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="button"
+                  className="button is-outlined"
                   type="submit"
                   onClick={() => {
                     handleDeckTitleSubmit(
@@ -103,7 +103,7 @@ const Decks = ({ appState, appDispatch }) => {
                 </button>
               </form>
             ) : (
-              <button className="button" onClick={() => setIsCreateMode(true)}>
+              <button className="button is-outlined" onClick={() => setIsCreateMode(true)}>
                 Add Deck
               </button>
             )}

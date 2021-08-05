@@ -115,7 +115,7 @@ const Note = ({ appState, appDispatch }) => {
         appState.note &&
         (isEditing ? (
           <>
-            <h1 class="title is-1">Edit Note:</h1>
+            <h1 className="title is-1">Edit Note:</h1>
             <EditNote
               note={appState.note}
               selectableDecks={appState.selectableDecks}

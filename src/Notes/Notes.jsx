@@ -108,7 +108,7 @@ const Notes = ({ appState, appDispatch }) => {
         <ErrorMessage message={error} />
       ) : (
         <>
-          <h1 class="title is-1">Notes</h1>
+          <h1 className="title is-1">Notes</h1>
           {appState.redirectMessage ? <p>{appState.redirectMessage}</p> : null}
 
           <div className="delete-me-later">
