@@ -79,11 +79,9 @@ export const ReviewPrompt = ({
           id="display-cue-select-button"
         >
           Change Prompt
-          {/* {displayCueSelect ? "Close" : "Change Prompt"} */}
         </button>
       )}
 
-      {/* { && ( */}
       <div className={`modal ${displayCueSelect ? "is-active" : ""}`}>
         <div className="modal-background" />
         <div className="modal-content">
@@ -115,7 +113,6 @@ export const ReviewPrompt = ({
           onClick={() => setDisplayCueSelect(false)}
         />
       </div>
-      {/* )} */}
 
       <button
         className="button is-outlined"

@@ -33,7 +33,7 @@ const Decks = ({ appState, appDispatch }) => {
         .then(({ destroyed_deck }) => {
           setDestroyedDeck(destroyed_deck);
           setIsLoading(false);
-          getAllDecks();
+          getAllDecks(appDispatch, setIsLoading, setError);
         })
         .catch(({ message }) => {
           setError(message);
@@ -54,7 +54,7 @@ const Decks = ({ appState, appDispatch }) => {
     })
       .then(() => {
         setIsLoading(false);
-        getAllDecks();
+        getAllDecks(appDispatch, setIsLoading, setError);
       })
       .catch(({ message }) => {
         setError(message);
