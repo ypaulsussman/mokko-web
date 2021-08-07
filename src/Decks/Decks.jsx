@@ -7,7 +7,6 @@ import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import DeckRow from "./DeckRow";
 
 const Decks = ({ appState, appDispatch }) => {
-  const [isCreateMode, setIsCreateMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [deckTitleFilter, setDeckTitleFilter] = useState("");
@@ -76,47 +75,68 @@ const Decks = ({ appState, appDispatch }) => {
         appState.decks && (
           <>
             <h1 className="title is-1">Decks</h1>
-            {isCreateMode ? (
-              <form name="newDeck">
-                <label htmlFor="deckTitle">New Deck Title:</label>
-                <input type="text" name="deckTitle" id="deckTitle" />
 
-                <button
-                  className="button is-outlined"
-                  onClick={() => setIsCreateMode(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="button is-outlined"
-                  type="submit"
-                  onClick={() => {
-                    handleDeckTitleSubmit(
-                      getFormData('form[name="newDeck"]').deckTitle,
-                      "",
-                      true
-                    );
-                    setIsCreateMode(false);
-                  }}
-                >
-                  Save
-                </button>
-              </form>
-            ) : (
-              <button className="button is-outlined" onClick={() => setIsCreateMode(true)}>
-                Add Deck
-              </button>
-            )}
             {destroyedDeck && (
-              <p>{`The "${destroyedDeck}" deck was deleted.`}</p>
+              <p className="mb-4">{`The "${destroyedDeck}" deck was deleted.`}</p>
             )}
-            <label htmlFor="deckTitleFilter">Filter by Deck Title:</label>
-            <input
-              type="text"
-              name="deckTitleFilter"
-              id="deckTitleFilter"
-              onChange={handleFilter}
-            />
+
+            <form
+              name="newDeck"
+              className="column mt-4"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <label
+                htmlFor="deckTitle"
+                className="label mr-2 mb-0"
+                style={{ flexShrink: 0 }}
+              >
+                Add New Deck:
+              </label>
+              <input
+                type="text"
+                name="deckTitle"
+                id="deckTitle"
+                className="input mr-4"
+                style={{ maxWidth: "33%" }}
+              />
+              <button
+                className="button is-outlined"
+                type="button"
+                onClick={() => {
+                  handleDeckTitleSubmit(
+                    getFormData('form[name="newDeck"]').deckTitle,
+                    "",
+                    true
+                  );
+                }}
+              >
+                Save
+              </button>
+            </form>
+
+            <div
+              className="column mb-4"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <label
+                htmlFor="deckTitleFilter"
+                className="label mr-2 mb-0"
+                style={{ flexShrink: 0 }}
+              >
+                Filter by Deck:
+              </label>
+              <input
+                className="input"
+                type="text"
+                name="deckTitleFilter"
+                id="deckTitleFilter"
+                onChange={handleFilter}
+                style={{ maxWidth: "33%" }}
+              />
+            </div>
+
+            <hr style={{ height: "1px", backgroundColor: "darkgray" }} />
+
             {deckTitleFilter
               ? appState.decks
                   .filter(({ title }) => deckTitleFilter.test(title))

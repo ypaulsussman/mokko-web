@@ -6,27 +6,38 @@ import { buildNotePreview } from "../utils";
 
 const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [newDeckTitle, setNewDeckTitle] = useState("");
+  const [newDeckTitle, setNewDeckTitle] = useState(deck.title);
 
   const handleInput = ({ target: { value } }) => {
     setNewDeckTitle(value);
   };
 
   return (
-    <div>
+    <div className="mb-4">
       <details>
-        <summary>
+        <summary style={{ display: "flex", alignItems: "center" }}>
           {isEditMode ? (
-            <form>
-              <label htmlFor="newDeckTitle">New Deck Title:</label>
+            <form style={{ display: "flex", alignItems: "center" }}>
+              <label
+                htmlFor="newDeckTitle"
+                className="label mr-2 mb-0"
+                style={{ flexShrink: 0 }}
+              >
+                New Deck Title:
+              </label>
               <input
                 type="text"
                 name="newDeckTitle"
                 id="newDeckTitle"
+                className="input mr-4"
                 onChange={handleInput}
+                value={newDeckTitle}
               />
 
-              <button className="button is-outlined" onClick={() => setIsEditMode(false)}>
+              <button
+                className="button is-outlined mr-4"
+                onClick={() => setIsEditMode(false)}
+              >
                 Cancel
               </button>
               <button
@@ -42,11 +53,17 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
             </form>
           ) : (
             <>
-              {deck.title}
-              <button className="button is-outlined" onClick={() => setIsEditMode(true)}>
+              <p className="subtitle ml-2 mr-4 mb-0">{deck.title}</p>
+              <button
+                className="button is-outlined mr-4"
+                onClick={() => setIsEditMode(true)}
+              >
                 Edit
               </button>
-              <button className="button is-outlined" onClick={() => handleDeckDelete(deck)}>
+              <button
+                className="button is-outlined"
+                onClick={() => handleDeckDelete(deck)}
+              >
                 Delete
               </button>
             </>
@@ -54,14 +71,19 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
         </summary>
         <ul>
           {deck.notes.map((note) => (
-            <li key={note.id}>
-              <div
+            <li
+              key={note.id}
+              style={{ display: "flex", alignItems: "center" }}
+              className="ml-5 mt-3"
+            >
+              <span
+                className="mr-3"
                 dangerouslySetInnerHTML={{
                   __html: marked(
                     DOMPurify.sanitize(buildNotePreview(note.content))
                   ),
                 }}
-              ></div>
+              />
               <Link to={`/notes/${note.id}`}>See Note</Link>
             </li>
           ))}
