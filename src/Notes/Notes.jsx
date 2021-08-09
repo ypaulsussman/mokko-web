@@ -8,7 +8,7 @@ import ErrorMessage from "../shared/ErrorMessage/ErrorMessage";
 import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 const NOTES_PER_PAGE = 6;
-const PAGE_LINKS_IN_PAGINATOR = 4;
+const PAGE_LINKS_IN_PAGINATOR = 6;
 const getPageURL = (page) => `/notes?page=${page}`;
 const buildPaginationLinks = (totalPages, setCurrentPage) => {
   return (
@@ -29,19 +29,39 @@ const buildPaginationLinks = (totalPages, setCurrentPage) => {
       >
         2
       </Link>
+      <Link
+        to={getPageURL(3)}
+        onClick={() => setCurrentPage(3)}
+        className="pagination-link"
+        aria-label="Go to page 3"
+      >
+        3
+      </Link>
       {totalPages > PAGE_LINKS_IN_PAGINATOR ? (
         <li aria-hidden>
           <span className="pagination-ellipsis">&hellip;</span>
         </li>
       ) : null}
-      <Link
-        to={getPageURL(totalPages - 1)}
-        onClick={() => setCurrentPage(totalPages - 1)}
-        className="pagination-link"
-        aria-label={`Go to page ${totalPages - 1}`}
-      >
-        {totalPages - 1}
-      </Link>
+      {totalPages > 5 ? (
+        <Link
+          to={getPageURL(totalPages - 2)}
+          onClick={() => setCurrentPage(totalPages - 2)}
+          className="pagination-link"
+          aria-label={`Go to page ${totalPages - 2}`}
+        >
+          {totalPages - 2}
+        </Link>
+      ) : null}
+      {totalPages > 4 ? (
+        <Link
+          to={getPageURL(totalPages - 1)}
+          onClick={() => setCurrentPage(totalPages - 1)}
+          className="pagination-link"
+          aria-label={`Go to page ${totalPages - 1}`}
+        >
+          {totalPages - 1}
+        </Link>
+      ) : null}
       <Link
         to={getPageURL(totalPages)}
         onClick={() => setCurrentPage(totalPages)}
@@ -51,6 +71,50 @@ const buildPaginationLinks = (totalPages, setCurrentPage) => {
         {totalPages}
       </Link>
     </>
+  );
+};
+
+const buildPaginator = (currentPage, setCurrentPage, totalPages) => {
+  return (
+    <nav
+      className="pagination is-centered mt-4 mb-4"
+      role="navigation"
+      aria-label="pagination"
+    >
+      <Link
+        to={
+          currentPage - 1
+            ? getPageURL(currentPage - 1)
+            : getPageURL(currentPage)
+        }
+        onClick={() =>
+          setCurrentPage(currentPage - 1 ? currentPage - 1 : currentPage)
+        }
+        className="pagination-previous"
+        aria-label="Go to previous page"
+      >
+        Previous
+      </Link>
+      <ul className="pagination-list">
+        {buildPaginationLinks(totalPages, setCurrentPage)}
+      </ul>
+      <Link
+        to={
+          currentPage < totalPages
+            ? getPageURL(currentPage + 1)
+            : getPageURL(currentPage)
+        }
+        onClick={() =>
+          currentPage < totalPages
+            ? setCurrentPage(currentPage + 1)
+            : setCurrentPage(currentPage)
+        }
+        className="pagination-next"
+        aria-label="Go to next page"
+      >
+        Next
+      </Link>
+    </nav>
   );
 };
 
@@ -115,56 +179,21 @@ const Notes = ({ appState, appDispatch }) => {
             <i>(...search and sort forthcoming)</i>
           </div>
 
+          {appState.noteCount &&
+            buildPaginator(currentPage, setCurrentPage, totalPages)}
+
           {appState.paginatedNotes &&
             appState.paginatedNotes.map(({ content, id }) => (
-              <Link key={id} to={`/notes/${id}`}>
-                <TextDisplay text={content} />
-              </Link>
+              <>
+                <Link key={id} to={`/notes/${id}`}>
+                  <TextDisplay text={content} />
+                </Link>
+                <hr style={{ height: "1px", backgroundColor: "darkgray" }} />
+              </>
             ))}
 
-          {appState.noteCount && (
-            <nav
-              className="pagination is-centered"
-              role="navigation"
-              aria-label="pagination"
-            >
-              <Link
-                to={
-                  currentPage - 1
-                    ? getPageURL(currentPage - 1)
-                    : getPageURL(currentPage)
-                }
-                onClick={() =>
-                  setCurrentPage(
-                    currentPage - 1 ? currentPage - 1 : currentPage
-                  )
-                }
-                className="pagination-previous"
-                aria-label="Go to previous page"
-              >
-                Previous
-              </Link>
-              <ul className="pagination-list">
-                {buildPaginationLinks(totalPages, setCurrentPage)}
-              </ul>
-              <Link
-                to={
-                  currentPage < totalPages
-                    ? getPageURL(currentPage + 1)
-                    : getPageURL(currentPage)
-                }
-                onClick={() =>
-                  currentPage < totalPages
-                    ? setCurrentPage(currentPage + 1)
-                    : setCurrentPage(currentPage)
-                }
-                className="pagination-next"
-                aria-label="Go to next page"
-              >
-                Next
-              </Link>
-            </nav>
-          )}
+          {appState.noteCount &&
+            buildPaginator(currentPage, setCurrentPage, totalPages)}
         </>
       )}
     </>
