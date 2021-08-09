@@ -81,10 +81,14 @@ const EditNote = ({
   const buildTagList = () =>
     [...note.tags, ...noteChanges.tagsToAdd].map(({ id, content }) =>
       tagsToRemoveIds.includes(id) ? (
-        <li key={content}>
-          <p className="add-strikethrough-to-me-later">{content}</p>
+        <li
+          key={content}
+          className="mb-2"
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          <del className="mr-4">{content}</del>
           <button
-            className="button is-outlined"
+            className="button is-outlined is-small"
             type="button"
             onClick={() => undoRemoveTag({ id, content })}
           >
@@ -92,10 +96,14 @@ const EditNote = ({
           </button>
         </li>
       ) : (
-        <li key={content}>
-          <p>{content}</p>
+        <li
+          key={content}
+          className="mb-2"
+          style={{ display: "flex", alignItems: "center" }}
+        >
+          <p className="mr-4">{content}</p>
           <button
-            className="button is-outlined"
+            className="button is-outlined is-small"
             type="button"
             onClick={() => removeTag({ id, content })}
           >
@@ -116,8 +124,84 @@ const EditNote = ({
 
   return (
     <>
+      <textarea
+        rows="6"
+        value={noteChanges.content ? noteChanges.content : note.content}
+        name="content"
+        onChange={handleChange}
+        className="textarea"
+      />
+
+      <div className="mt-4">
+        <input
+          type="checkbox"
+          id="keepActive"
+          name="active"
+          checked={noteChanges.active}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        <label htmlFor="keepActive">Keep this note in rotation</label>
+      </div>
+
+      {note.next_occurrence && (
+        <div>
+          <label>
+            Next surface this note on:
+            {/* @TODO: add yyyy-mm-dd validation */}
+            <input
+              type="text"
+              name="next_occurrence"
+              value={noteChanges.next_occurrence}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+      )}
+
+      <h2 className="subtitle is-3 mt-4 mb-1">Deck:</h2>
+      <select
+        className="select"
+        name="deck_id"
+        onChange={handleChange}
+        value={getSelectedDeck()}
+      >
+        {selectableDecks.map(({ id, title }) => (
+          <option key={id} value={id}>
+            {title}
+          </option>
+        ))}
+      </select>
+
+      <h2 className="subtitle is-3 mt-4 mb-1">Tags:</h2>
+      <ul>
+        {note.tags.length || noteChanges.tagsToAdd.length
+          ? buildTagList()
+          : null}
+        <li key="add-tag" style={{ display: "flex", alignItems: "center" }}>
+          {/* @TODO: Add <datalist> autocomplete */}
+          <input
+            type="text"
+            name="newTag"
+            value={newTag}
+            aria-label="Add a new tag"
+            className="input is-small mr-4"
+            style={{ maxWidth: "12rem" }}
+            onChange={(e) => setNewTag(e.target.value)}
+          />
+          <button
+            className="button is-outlined is-small"
+            type="button"
+            onClick={() => addTag()}
+          >
+            Add Tag
+          </button>
+        </li>
+      </ul>
+      <hr style={{ height: "1px", backgroundColor: "darkgray" }} />
+
       <button
-        className="button is-outlined"
+        className="button is-outlined mr-4"
         onClick={() => {
           // If it's a new note and no deck's been selected,
           // choose the one visible in the deck <select> field
@@ -133,65 +217,6 @@ const EditNote = ({
       <button className="button is-outlined" onClick={cancelFunction}>
         Cancel
       </button>
-      <textarea
-        rows="20"
-        cols="80"
-        value={noteChanges.content ? noteChanges.content : note.content}
-        name="content"
-        onChange={handleChange}
-      />
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            name="active"
-            checked={noteChanges.active}
-            onChange={handleChange}
-          />
-          Keep this note in rotation
-        </label>
-      </div>
-      {note.next_occurrence && (
-        <div>
-          <label>
-            Next surface this note on:
-            {/* @TODO: add yyyy-mm-dd validation */}
-            <input
-              type="text"
-              name="next_occurrence"
-              value={noteChanges.next_occurrence}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
-      )}
-      <h2>Deck:</h2>
-      <select name="deck_id" onChange={handleChange} value={getSelectedDeck()}>
-        {selectableDecks.map(({ id, title }) => (
-          <option key={id} value={id}>
-            {title}
-          </option>
-        ))}
-      </select>
-      <h2>Tags:</h2>
-      <ul>
-        {note.tags.length || noteChanges.tagsToAdd.length
-          ? buildTagList()
-          : null}
-        <li key="add-tag">
-          {/* @TODO: Add <datalist> autocomplete */}
-          <input
-            type="text"
-            name="newTag"
-            value={newTag}
-            aria-label="Add a new tag"
-            onChange={(e) => setNewTag(e.target.value)}
-          />
-          <button className="button is-outlined" type="button" onClick={() => addTag()}>
-            Add Tag
-          </button>
-        </li>
-      </ul>
     </>
   );
 };
