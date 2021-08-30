@@ -184,12 +184,11 @@ const Notes = ({ appState, appDispatch }) => {
 
           {appState.paginatedNotes &&
             appState.paginatedNotes.map(({ content, id }) => (
-              <>
-                <Link key={id} to={`/notes/${id}`}>
-                  <TextDisplay text={content} />
-                </Link>
+              <div key={id}>
+                <TextDisplay text={content} />
+                <Link to={`/notes/${id}`}> See Note Details</Link>
                 <hr style={{ height: "1px", backgroundColor: "darkgray" }} />
-              </>
+              </div>
             ))}
 
           {appState.noteCount &&

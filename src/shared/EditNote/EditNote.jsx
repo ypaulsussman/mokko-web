@@ -179,11 +179,11 @@ const EditNote = ({
           ? buildTagList()
           : null}
         <li key="add-tag" style={{ display: "flex", alignItems: "center" }}>
-          {/* @TODO: Add <datalist> autocomplete */}
           <input
             type="text"
             name="newTag"
             value={newTag}
+            list="tags"
             aria-label="Add a new tag"
             className="input is-small mr-4"
             style={{ maxWidth: "12rem" }}
@@ -196,6 +196,11 @@ const EditNote = ({
           >
             Add Tag
           </button>
+          <datalist id="tags">
+            {tags.map(({ id, content }) => (
+              <option key={id} value={content} />
+            ))}
+          </datalist>
         </li>
       </ul>
       <hr style={{ height: "1px", backgroundColor: "darkgray" }} />
