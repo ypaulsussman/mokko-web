@@ -15,7 +15,7 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
   return (
     <div className="mb-4">
       <details>
-        <summary style={{ display: "flex", alignItems: "center" }}>
+        <summary>
           {isEditMode ? (
             <form style={{ display: "flex", alignItems: "center" }}>
               <label
@@ -53,7 +53,12 @@ const DeckRow = ({ deck, handleDeckDelete, handleDeckTitleSubmit }) => {
             </form>
           ) : (
             <>
-              <p className="subtitle ml-2 mr-4 mb-0">{deck.title}</p>
+              <span
+                className="subtitle ml-2 mr-4 mt-2 mb-0"
+                style={{ display: "inline-block" }}
+              >
+                {deck.title}
+              </span>
               <button
                 className="button is-outlined mr-4"
                 onClick={() => setIsEditMode(true)}
