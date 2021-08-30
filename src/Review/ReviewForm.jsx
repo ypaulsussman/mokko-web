@@ -10,11 +10,14 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [cue, setCue] = useState(
-    currentNote.prompts_remaining.length
-      ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
-      : currentNote.cue_note
+    // currentNote.prompts_remaining.length
+    //   ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
+    //   : currentNote.cue_note
+    currentNote.cue_note
+    // @TODO: revert this (and cueIsPrompt) change post-MVP, when you want to 
+    // experiment more with non-note content as the "cue" for mokko-generation
   );
-  const cueIsPrompt = Boolean(currentNote.prompts_remaining.length);
+  const cueIsPrompt = false; // Boolean(currentNote.prompts_remaining.length);
 
   const submitMokko = (e) => {
     e.preventDefault();
@@ -52,8 +55,11 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
       <h1 className="is-sr-only">Create a Mokko:</h1>
       <div className="columns is-centered is-desktop">
         <section
-          style={{ marginBottom: 0}} // Overwrites Bulma setting for `.box:not(:last-child)`
-          className={`box column is-two-fifths-desktop mt-6 ${mokkoStage > 1 ? "mr-6" : ""}`}
+          // Overwrites Bulma setting for `.box:not(:last-child)`
+          style={{ marginBottom: 0 }}
+          className={`box column is-two-fifths-desktop mt-6 ${
+            mokkoStage > 1 ? "mr-6" : ""
+          }`}
         >
           <h2 className="subtitle is-3"> Note:</h2>
           <ReviewNote
@@ -88,6 +94,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
               <ReviewNote
                 appDispatch={appDispatch}
                 note={cue}
+                isCue={true}
                 displayButtons={{
                   modifierButtons: true,
                   nextStageButton: true,

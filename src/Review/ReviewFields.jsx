@@ -3,7 +3,12 @@ import { ACTIONS, BASE_INTERVALS } from "../constants";
 import { NoteDTM } from "../shared/NoteDTM/NoteDTM";
 import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
-export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
+export const ReviewNote = ({
+  appDispatch,
+  note,
+  isCue = false,
+  displayButtons,
+}) => {
   const [displayNoteDTM, setDisplayNoteDTM] = useState(false);
 
   return (
@@ -45,7 +50,7 @@ export const ReviewNote = ({ appDispatch, note, displayButtons }) => {
           onClick={() =>
             appDispatch({
               type: ACTIONS.SET_MOKKOSTATUS,
-              mokkoStatus: { mokkoStage: 2 },
+              mokkoStatus: { mokkoStage: isCue ? 3 : 2 },
             })
           }
         >
@@ -85,8 +90,13 @@ export const ReviewPrompt = ({
       <div className={`modal ${displayCueSelect ? "is-active" : ""}`}>
         <div className="modal-background" />
         <div className="modal-content">
-          <div className="box" style={{display: 'flex', alignItems: 'center'}}>
-            <label htmlFor="mokkoPrompt" className="mr-4">Select a different prompt:</label>
+          <div
+            className="box"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <label htmlFor="mokkoPrompt" className="mr-4">
+              Select a different prompt:
+            </label>
             <select
               className="select"
               id="mokkoPrompt"
