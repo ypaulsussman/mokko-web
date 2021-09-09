@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import { ACTIONS, API_URL } from "../constants";
 import { callAPI } from "../utils";
 import LoadingSpinner from "../shared/LoadingSpinner/LoadingSpinner";
-import { ReviewNote, ReviewPrompt, ReviewMokko } from "./ReviewFields";
+import { ReviewNote, ReviewMokko } from "./ReviewFields";
 import TextDisplay from "../shared/TextDisplay/TextDisplay";
 
 const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
   const { mokkoValue, mokkoInterval, mokkoStage } = mokkoStatus;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [cue, setCue] = useState(
-    // currentNote.prompts_remaining.length
-    //   ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
-    //   : currentNote.cue_note
-    currentNote.cue_note
-    // @TODO: revert this (and cueIsPrompt) change post-MVP, when you want to
-    // experiment more with non-note content as the "cue" for mokko-generation
-  );
+
+  // @TODO: revert this (and cueIsPrompt) change post-MVP, when you want to
+  // experiment more with non-note content as the "cue" for mokko-generation
+  // const [cue, setCue] = useState(
+  //   currentNote.prompts_remaining.length
+  //     ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
+  //     : currentNote.cue_note
+  // );
   const cueIsPrompt = false; // Boolean(currentNote.prompts_remaining.length);
 
   const submitMokko = (e) => {
@@ -30,7 +30,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
       body: JSON.stringify({
         mokkoInterval,
         mokkoValue,
-        cueId: cue.id,
+        cueId: currentNote.cue_note.id,
         cueIsPrompt,
         noteId: currentNote.id,
       }),
@@ -74,7 +74,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
           {mokkoStage === 3 && (
             <>
               <h2 className="subtitle is-3">Prompt:</h2>
-              <TextDisplay text={cue.content} />
+              <TextDisplay text={currentNote.cue_note.content} />
             </>
           )}
         </section>
@@ -82,18 +82,17 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
         {mokkoStage === 2 && (
           <section className="box column is-two-fifths-desktop mt-6">
             <h2 className="subtitle is-3">Prompt:</h2>
-            {cueIsPrompt ? (
-              <ReviewPrompt
-                prompt={cue}
-                promptsRemaining={currentNote.prompts_remaining}
-                setCue={setCue}
-                allPrompts={allPrompts}
-                appDispatch={appDispatch}
-              />
-            ) : (
+            {cueIsPrompt ? null : (
+              // <ReviewPrompt
+              //   prompt={cue}
+              //   promptsRemaining={currentNote.prompts_remaining}
+              //   setCue={setCue}
+              //   allPrompts={allPrompts}
+              //   appDispatch={appDispatch}
+              // />
               <ReviewNote
                 appDispatch={appDispatch}
-                note={cue}
+                note={currentNote.cue_note}
                 isCue={true}
                 displayButtons={{
                   modifierButtons: true,
