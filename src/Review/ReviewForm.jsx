@@ -14,7 +14,7 @@ const ReviewForm = ({ currentNote, allPrompts, mokkoStatus, appDispatch }) => {
     //   ? allPrompts.find((p) => p.id === currentNote.prompts_remaining[0])
     //   : currentNote.cue_note
     currentNote.cue_note
-    // @TODO: revert this (and cueIsPrompt) change post-MVP, when you want to 
+    // @TODO: revert this (and cueIsPrompt) change post-MVP, when you want to
     // experiment more with non-note content as the "cue" for mokko-generation
   );
   const cueIsPrompt = false; // Boolean(currentNote.prompts_remaining.length);
